@@ -1,0 +1,40 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: "Arial", sans-serif;
+}
+
+.content {
+    margin: 25px;
+}
+
+.header {
+    background-color: lightblue;
+    height: 100px;
+    padding: 25px;
+}
+
+.card {
+    border: 2px solid black;
+    border-radius: 5px;
+    background-color: lightgray;
+    float: left;
+    margin: 10px;
+    padding: 10px;
+    width: 250px;
+    height: 450px;
+    text-align: center;
+}
+
+.card-create {
+    border: 2px dashed black;
+    background-color: white;
+}
+
+.card p {
+    padding: 20px;
+}

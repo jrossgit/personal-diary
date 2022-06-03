@@ -1,0 +1,33 @@
+version: '3.7'
+
+services:
+  db:
+    image: postgres:14.1-bullseye
+    ports:
+      - 5432:5432
+    environment:
+      - POSTGRES_USER=${SQL_USER}
+      - POSTGRES_PASSWORD=${SQL_PASSWORD}
+      - POSTGRES_DB=${SQL_DATABASE}
+
+  web:
+    build: ./backend
+    command: python manage.py runserver 0.0.0.0:8000
+    depends_on:
+      - db
+    ports:
+      - 8000:8000
+    environment:
+      - ALLOWED_HOSTS=localhost,0.0.0.0
+      - DEBUG=1
+      - SECRET_KEY=foo
+      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
+      - SQL_ENGINE=django.db.backends.postgresql
+      - SQL_DATABASE=${SQL_DATABASE}
+      - SQL_USER=${SQL_USER}
+      - SQL_PASSWORD=${SQL_PASSWORD}
+      - SQL_HOST=${SQL_HOST}
+      - SQL_PORT=${SQL_PORT}
+
+volumes:
+  sqlite_data:
