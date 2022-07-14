@@ -1,7 +1,6 @@
 import datetime
 
 from django.shortcuts import render, redirect
-from django.db.models import F
 
 from app import forms, models
 
