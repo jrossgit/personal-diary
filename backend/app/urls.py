@@ -19,8 +19,8 @@ from django.contrib import admin
 from django.urls import path
 
 
-urlpatterns = []
-
-urlpatterns.append(
-    path("admin/", admin.site.urls),
-)
+urlpatterns = [
+    path("", views.home_view, name="home"),
+    path("todo", views.create_todo, name="todo-create"),
+    path("todo/<uuid:id>/complete", views.complete_todo, name="todo-complete"),
+]

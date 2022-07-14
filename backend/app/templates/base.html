@@ -1,0 +1,26 @@
+{% load static %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>My Page Title</title>
+        <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
+    </head>
+    <body>
+        {% block navbar %}
+        <nav class="navbar navbar-expand-lg navbar-light bg-light">
+            <div class="container-fluid">
+                <a class="navbar-brand" href="#">JR Diary</a>
+            </div>
+        </nav>
+        {% endblock navbar %}
+        <div class="container-fluid">
+
+            {% block content %}
+            {% endblock content %}
+        </div>
+    </body>
+</html>

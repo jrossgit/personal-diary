@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+
+{% block content %}
+<h1>To Do</h1>
+
+<a href="{% url 'todo-create' %}">
+    New Todo
+</a>
+
+<ol>
+{% if todos %}
+    {% for todo in todos %}
+    {% if todo.complete_time %}
+    <li><s>{{ todo.text }}</s></li>
+    {% else %}
+    <li><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
+    {% endif %}
+    {% endfor %}
+{% else %}
+    All tasks complete!
+{% endif %}
+</ol>
+{% endblock %}
