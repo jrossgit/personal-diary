@@ -3,11 +3,12 @@
 .vscode
 .venv
 __pycache__
-db.sqlite3
 .DS_Store
-venv_imagerank2
-data
 
 # Settings
+.env
 .env.local
 .env.production
+
+# Local testing
+test_db
