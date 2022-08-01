@@ -7,17 +7,34 @@
     New Todo
 </a>
 
-<ol>
-{% if todos %}
-    {% for todo in todos %}
-    {% if todo.complete_time %}
-    <li><s>{{ todo.text }}</s></li>
-    {% else %}
-    <li><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
-    {% endif %}
-    {% endfor %}
-{% else %}
-    All tasks complete!
+{% if unsorted_todos %}
+<h3>Unsorted</h3>
+
+<div class="card" id="category_unsorted">
+    <div class="card-body">
+        <h5 class="card-title">Unsorted Tasks</h5>
+        <ul>
+        {% for todo in unsorted_todos %}
+            <li class="list-group-item"><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
+        {% endfor %}
+        </ul>
+    </div>
+</div>
 {% endif %}
-</ol>
+
+{% if sorted_todos %}
+    {% regroup sorted_todos by category as todo_categories %}
+    {% for todo_category in todo_categories %}
+    <div class="card" id="category_{{todo_category}}">
+        <div class="card-body">
+            <h5 class="card-title">{{ todo_category.grouper.name }}</h5>
+            <ul>
+            {% for todo in todo_category.list %}
+                <li class="list-group-item"><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
+            {% endfor %}
+            </ul>
+        </div>
+    </div>
+    {% endfor %}
+{% endif %}
 {% endblock %}

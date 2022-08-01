@@ -6,12 +6,17 @@ from app import forms, models
 
 
 def home_view(request):
-    displayed_todos = models.Todos.objects.exclude(
-        complete_time__isnull=False,
-    )
+    unsorted_todos = models.Todos.objects.filter(
+        complete_time__isnull=True,
+        category__isnull=True)
+    sorted_todos = models.Todos.objects.filter(
+        complete_time__isnull=True,
+        category__isnull=False
+    ).order_by("category__name")
 
     return render(request, template_name="home.html", context={
-        "todos": displayed_todos,
+        "sorted_todos": sorted_todos,
+        "unsorted_todos": unsorted_todos,
         "form": forms.NewTodoForm(),
     })
 
