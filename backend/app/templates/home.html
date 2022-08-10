@@ -3,38 +3,36 @@
 {% block content %}
 <h1>To Do</h1>
 
-<a href="{% url 'todo-create' %}">
-    New Todo
-</a>
+<b></b>
+<a class="btn btn-primary mb-3" href="{% url 'todo-category-create' %}" role="button">New Category</a>
 
-{% if unsorted_todos %}
-<h3>Unsorted</h3>
-
-<div class="card" id="category_unsorted">
+<div class="card mb-3" id="category_unsorted">
     <div class="card-body">
-        <h5 class="card-title">Unsorted Tasks</h5>
-        <ul>
+        <h5 class="card-title">Miscellaneous Tasks</h5>
+    </div>
+        <ul class="list-group list-group-flush">
         {% for todo in unsorted_todos %}
             <li class="list-group-item"><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
         {% endfor %}
+
+            <li class="list-group-item"><a href="{% url 'todo-create' %}">New Task</a></li>
         </ul>
-    </div>
 </div>
-{% endif %}
 
 {% if sorted_todos %}
     {% regroup sorted_todos by category as todo_categories %}
     {% for todo_category in todo_categories %}
-    <div class="card" id="category_{{todo_category}}">
-        <div class="card-body">
-            <h5 class="card-title">{{ todo_category.grouper.name }}</h5>
-            <ul>
-            {% for todo in todo_category.list %}
-                <li class="list-group-item"><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
-            {% endfor %}
-            </ul>
+        <div class="card mb-3" id="category_{{todo_category}}">
+            <div class="card-body">
+                <h5 class="card-title">{{ todo_category.grouper.name }}</h5>
+            </div>
+                <ul class="list-group list-group-flush">
+                {% for todo in todo_category.list %}
+                    <li class="list-group-item"><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
+                {% endfor %}
+                    <li class="list-group-item"><a href="{% url 'todo-create' category_id=todo_category.grouper.id %}">New Task</a></li>
+                </ul>
         </div>
-    </div>
     {% endfor %}
 {% endif %}
 {% endblock %}

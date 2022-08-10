@@ -23,4 +23,6 @@ urlpatterns = [
     path("", views.home_view, name="home"),
     path("todo", views.create_todo, name="todo-create"),
     path("todo/<uuid:id>/complete", views.complete_todo, name="todo-complete"),
+    path("todocategory/<uuid:category_id>/todo", views.create_todo, name="todo-create"),
+    path("todocategory", views.create_todo_category, name="todo-category-create"),
 ]

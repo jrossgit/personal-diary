@@ -21,13 +21,30 @@ def home_view(request):
     })
 
 
-def create_todo(request):
+def create_todo(request, category_id=None):
     if request.method == "GET":
+
+        initial = {}
+        if category_id:
+            initial["category"] = models.TodoCategory.objects.get(id=category_id).id
+
+        new_todo_form = forms.NewTodoForm(initial=initial)
         return render(request, template_name="create_todo.html", context={
-            "form": forms.NewTodoForm(),
+            "form": new_todo_form,
         })
     elif request.method == "POST":
         form = forms.NewTodoForm(request.POST)
+        form.save()
+        return redirect("home")
+
+
+def create_todo_category(request):
+    if request.method == "GET":
+        return render(request, template_name="create_todo_category.html", context={
+            "form": forms.NewTodoCategoryForm(),
+        })
+    elif request.method == "POST":
+        form = forms.NewTodoCategoryForm(request.POST)
         form.save()
         return redirect("home")
 

@@ -30,6 +30,8 @@ class TodoCategory(models.Model):
 
     id = models.fields.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.fields.CharField(max_length=256)
+    create_time = models.DateTimeField(verbose_name="Time todo created", auto_now_add=True)
+    deactivate_time = models.DateTimeField(verbose_name="Time todo completed", null=True, blank=True)
 
 
 # class Diary(models.Model):
