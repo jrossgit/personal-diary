@@ -22,7 +22,7 @@
 {% if sorted_todos %}
     {% regroup sorted_todos by category as todo_categories %}
     {% for todo_category in todo_categories %}
-        <div class="card mb-3" id="category_{{todo_category}}">
+        <div class="card mb-3" id="category-{{todo_category.grouper.name|slugify}}">
             <div class="card-body">
                 <h5 class="card-title">{{ todo_category.grouper.name }}</h5>
             </div>

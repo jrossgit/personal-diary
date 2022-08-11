@@ -1,6 +1,7 @@
 import uuid
 
 from django.db import models
+from django.utils.text import slugify
 
 
 # TODO Rename this as `Todo`
@@ -33,6 +34,10 @@ class TodoCategory(models.Model):
     create_time = models.DateTimeField(verbose_name="Time todo created", auto_now_add=True)
     deactivate_time = models.DateTimeField(verbose_name="Time todo completed", null=True, blank=True)
 
+    @property
+    def card_slug(self):
+        if self.name:
+            return f"category-{slugify(self.name)}"
 
 # class Diary(models.Model):
 

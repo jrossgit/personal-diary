@@ -1,6 +1,6 @@
 import datetime
 
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 
 from app import forms, models
 
@@ -54,4 +54,8 @@ def complete_todo(request, id):
     if not todo.complete_time:
         todo.complete_time = datetime.datetime.now()
         todo.save()
-    return redirect("home")
+
+    if todo.category:
+        return redirect(f"{reverse('home')}#{todo.category.card_slug}")
+    else:
+        return redirect("home")
