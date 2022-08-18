@@ -1,4 +1,5 @@
-FROM ubuntu:focal
+### Base Python install image
+FROM ubuntu:focal AS base
 
 # Install dependencies
 RUN apt-get update -y \
@@ -10,19 +11,26 @@ RUN pip3 install --upgrade pip
 # Set python aliases for python3
 RUN ln -s /usr/bin/python3 /usr/bin/python
 
-# Poetry installation and setup
-RUN curl -sSLO https://raw.githubusercontent.com/sdispater/poetry/master/get-poetry.py \
-    && python get-poetry.py --version 1.0.0 \
-    && rm get-poetry.py
-ENV PATH="/root/.poetry/bin:/opt/venv/bin:${PATH}"
+### Poetry installation and setup
+FROM base as requirements
+
+RUN curl -sSL https://install.python-poetry.org | python3 - --version 1.1.7
+ENV PATH="/root/.local/bin:/usr/bin:$PATH"
+
+COPY pyproject.toml poetry.lock ./
+RUN poetry export -f requirements.txt --without-hashes -o requirements.txt
+
+
+### Main installation
+FROM base AS build
 
 COPY . /app
 WORKDIR /app
+RUN mkdir data
 
 # Install Python dependencies
-COPY pyproject.toml poetry.lock manage.py app config ./
-RUN poetry config virtualenvs.create false \
-    && poetry install --no-dev --no-interaction --no-ansi
+COPY --from=requirements requirements.txt .
+RUN pip install -r requirements.txt
 
 EXPOSE 8000
-ENTRYPOINT ["/app/entrypoint.sh"]
+CMD 'bash -c "python manage.py migrate && python manage.py runserver 0.0.0.0:8000'
