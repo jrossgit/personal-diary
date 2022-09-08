@@ -1,14 +1,16 @@
 {% extends "base.html" %}
 
 {% block content %}
+
 <h1>To Do</h1>
 
 <b></b>
-<a class="btn btn-primary mb-3" href="{% url 'todo-category-create' %}" role="button">New Category</a>
 
-<div class="card mb-3" id="category_unsorted">
-    <div class="card-body">
-        <h5 class="card-title">Miscellaneous Tasks</h5>
+<a class="btn btn-primary mb-3 rounded-0" href="{% url 'todo-category-create' %}" role="button">New Category</a>
+
+<div class="card mb-3 border-primary rounded-0 border-3" id="category-unsorted">
+    <div class="card-body bg-primary text-white">
+        <h4 class="card-title">Miscellaneous Tasks</h4>
     </div>
         <ul class="list-group list-group-flush">
         {% for todo in unsorted_todos %}
@@ -19,20 +21,23 @@
         </ul>
 </div>
 
-{% if sorted_todos %}
-    {% regroup sorted_todos by category as todo_categories %}
-    {% for todo_category in todo_categories %}
-        <div class="card mb-3" id="category-{{todo_category.grouper.name|slugify}}">
-            <div class="card-body">
-                <h5 class="card-title">{{ todo_category.grouper.name }}</h5>
-            </div>
-                <ul class="list-group list-group-flush">
-                {% for todo in todo_category.list %}
-                    <li class="list-group-item"><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
-                {% endfor %}
-                    <li class="list-group-item"><a href="{% url 'todo-create' category_id=todo_category.grouper.id %}">New Task</a></li>
-                </ul>
-        </div>
-    {% endfor %}
-{% endif %}
+
+{% for category in new_categories %}
+<div class="card mb-3 border-primary rounded-0 border-3" id="category-{{category.name|slugify}}">
+    <div class="card-body bg-primary text-white">
+        <h4 class="card-title">{{ category.name }}</h4>
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for todo in category.todos.all %}
+            <li class="list-group-item"><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
+        {% endfor %}
+
+            <li class="list-group-item">
+                <a href="{% url 'todo-create' category_id=category.id %}">New Task</a>
+                <a href="{% url 'todo-category-delete' id=category.id %}">Close</a>
+            </li>
+    </ul>
+</div>
+{% endfor %}
+
 {% endblock %}

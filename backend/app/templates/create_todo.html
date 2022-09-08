@@ -6,7 +6,7 @@
 <form action="{% url 'todo-create' %}" method="post">
     {% csrf_token %}
     {% bootstrap_form form %}
-    <input type="submit">
+    <input type="submit" value="Create">
 </form>
 
 {% endblock content %}

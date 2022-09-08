@@ -15,7 +15,6 @@ Including another URLconf
 """
 from app import views
 
-from django.contrib import admin
 from django.urls import path
 
 
@@ -24,5 +23,7 @@ urlpatterns = [
     path("todo", views.create_todo, name="todo-create"),
     path("todo/<uuid:id>/complete", views.complete_todo, name="todo-complete"),
     path("todocategory/<uuid:category_id>/todo", views.create_todo, name="todo-create"),
+
     path("todocategory", views.create_todo_category, name="todo-category-create"),
+    path("todocategory/<uuid:id>/delete", views.delete_todo_category, name="todo-category-delete"),
 ]

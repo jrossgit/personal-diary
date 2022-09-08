@@ -18,7 +18,7 @@ class Todos(models.Model):
     create_time = models.DateTimeField(verbose_name="Time todo created", auto_now_add=True)
     complete_time = models.DateTimeField(verbose_name="Time todo completed", null=True, blank=True)
 
-    category = models.ForeignKey("TodoCategory", on_delete=models.CASCADE, null=True, blank=True)
+    category = models.ForeignKey("TodoCategory", on_delete=models.CASCADE, null=True, blank=True, related_name="todos")
 
 
 class TodoCategory(models.Model):
@@ -39,16 +39,10 @@ class TodoCategory(models.Model):
         if self.name:
             return f"category-{slugify(self.name)}"
 
-# class Diary(models.Model):
-
-#     id = models.fields.UUIDField(verbose_name="Todo UUID", primary_key=True, default=uuid.uuid4)
-#     name = models.fields.CharField(max_length=128)
-#     # Auto slug field
-#     end_date = models.fields.DateField()
 
 # class DiaryEntry(models.Model):
 
 #     id = models.fields.UUIDField(verbose_name="Todo UUID", primary_key=True, default=uuid.uuid4)
 #     text = models.fields.TextField()
 #     date = models.fields.DateField(auto_now=)
-#     diary = models.fields.
+#     category = models.ForeignKey("TodoCategory", on_delete=models.CASCADE, null=True, blank=True, related_name="todos")
