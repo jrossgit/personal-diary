@@ -1,4 +1,6 @@
 import datetime
+import re
+from unicodedata import category
 
 from django.db.models import Prefetch
 from django.shortcuts import render, redirect, reverse
@@ -84,4 +86,27 @@ def complete_todo(request, id):
 
 
 def create_update_diary_entry(request):
-    pass
+
+    try:
+        diary_entry = models.DiaryEntry.objects.get(
+            date=datetime.date.today(), category__isnull=True)
+    except models.DiaryEntry.DoesNotExist:
+        diary_entry = None
+
+    if request.method == "GET":
+        form = forms.DiaryEntryForm(instance=diary_entry)
+        recent_entries = models.DiaryEntry.objects.filter(
+            date__lte=datetime.date.today() - datetime.timedelta(days=1),
+            date__gte=datetime.date.today() - datetime.timedelta(days=14),
+            category__isnull=True
+        )
+        return render(request, template_name="create_diary_entry.html", context={
+            "form": form,
+            "today": datetime.date.today(),
+            "recent_entries": recent_entries,
+        })
+
+    elif request.method == "POST":
+        form = forms.DiaryEntryForm(request.POST, instance=diary_entry)
+        form.save()
+        return redirect("diary-create-update")

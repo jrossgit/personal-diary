@@ -1,0 +1,19 @@
+{% extends "base.html" %}
+{% load django_bootstrap5 %}
+
+{% block content %}
+
+<h1>Diary</h1>
+<h2>{{ today }}</h2>
+<form action="{% url 'diary-create-update' %}" method="post">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" value="Update">
+</form>
+
+{% for entry in recent_entries %}
+<h2>{{ entry.date }}</h2>
+<p>{{ entry.text }}</p>
+{% endfor %}
+
+{% endblock content %}

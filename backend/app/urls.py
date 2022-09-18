@@ -26,4 +26,6 @@ urlpatterns = [
 
     path("todocategory", views.create_todo_category, name="todo-category-create"),
     path("todocategory/<uuid:id>/delete", views.delete_todo_category, name="todo-category-delete"),
+
+    path("diary", views.create_update_diary_entry, name="diary-create-update"),
 ]
