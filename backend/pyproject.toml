@@ -10,6 +10,7 @@ django = "^4.0.4"
 uwsgi = "^2.0.19"
 python-dotenv = "^0.20.0"
 django-bootstrap5 = "^21.3"
+django-debug-toolbar = "^3.6.0"
 
 [tool.poetry.dev-dependencies]
 
