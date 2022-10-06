@@ -68,18 +68,6 @@ def delete_todo_category(request, id):
     return redirect("home")
 
 
-def complete_todo(request, id):
-    todo = models.Todos.objects.get(id=id)
-    if not todo.complete_time:
-        todo.complete_time = datetime.datetime.now()
-        todo.save()
-
-    if todo.category:
-        return redirect(f"{reverse('home')}#{todo.category.card_slug}")
-    else:
-        return redirect("home")
-
-
 def create_update_diary_entry(request):
 
     try:

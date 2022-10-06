@@ -3,6 +3,9 @@
     hx-trigger="dblclick"
     hx-target="this"
     hx-swap="outerHTML">
-    <a href="{% url 'todo-complete' id=todo.id %}">X</a>
+    <a hx-delete="{% url 'htmx-todo-complete' todo_id=todo.id %}"
+       hx-trigger="click"
+       hx-swap="delete"
+    >X</a>
     {{ todo.text }}
 </li>

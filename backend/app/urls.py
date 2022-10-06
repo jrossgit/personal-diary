@@ -21,7 +21,6 @@ from django.urls import include, path
 urlpatterns = [
     path("", views.home_view, name="home"),
     path("todo", views.create_todo, name="todo-create"),
-    path("todo/<uuid:id>/complete", views.complete_todo, name="todo-complete"),
     path("todocategory/<uuid:category_id>/todo", views.create_todo, name="todo-create"),
 
     path("todocategory", views.create_todo_category, name="todo-category-create"),
@@ -29,6 +28,7 @@ urlpatterns = [
 
     path("diary", views.create_update_diary_entry, name="diary-create-update"),
 
+    path("htmx/todo/<uuid:todo_id>:delete", htmx_views.complete_todo, name="htmx-todo-complete"),
     path("htmx/todo/<uuid:todo_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
     path("htmx/todocategory/:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
     path("htmx/todocategory/<uuid:category_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
