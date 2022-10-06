@@ -6,11 +6,17 @@
 <!DOCTYPE html>
 <html>
     <head>
-        <title>{{ title |default:"Diary" }}</title>
+        <title>{{ title | default:"Diary" }}</title>
         <link rel="icon" type="image/x-icon" href="{% static 'favicon.ico' %}">
         <link rel="stylesheet" href="{% static 'style.css' %}"/>
     </head>
     <body>
+        <script src="{% static 'js/htmx.min.js' %}"></script>
+        <script>
+            document.body.addEventListener('htmx:configRequest', (event) => {
+                event.detail.headers['X-CSRFToken'] = '{{ csrf_token }}';
+            })
+        </script>
         {% block navbar %}
         <nav class="navbar navbar-expand-md navbar-dark bg-pink">
             <div class="container-fluid">

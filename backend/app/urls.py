@@ -5,17 +5,17 @@ The `urlpatterns` list routes URLs to views. For more information please see:
 Examples:
 Function views
     1. Add an import:  from my_app import views
-    2. Add a URL to urlpatterns:  path('', views.home, name='home')
+    2. Add a URL to urlpatterns:  path("", views.home, name="home")
 Class-based views
     1. Add an import:  from other_app.views import Home
-    2. Add a URL to urlpatterns:  path('', Home.as_view(), name='home')
+    2. Add a URL to urlpatterns:  path("", Home.as_view(), name="home")
 Including another URLconf
     1. Import the include() function: from django.urls import include, path
-    2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
+    2. Add a URL to urlpatterns:  path("blog/", include("blog.urls"))
 """
-from app import views
+from app import htmx_views, views
 
-from django.urls import path
+from django.urls import include, path
 
 
 urlpatterns = [
@@ -28,4 +28,10 @@ urlpatterns = [
     path("todocategory/<uuid:id>/delete", views.delete_todo_category, name="todo-category-delete"),
 
     path("diary", views.create_update_diary_entry, name="diary-create-update"),
+
+    path("htmx/todo/<uuid:todo_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
+    path("htmx/todocategory/:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
+    path("htmx/todocategory/<uuid:category_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
+
+    path("__debug__/", include("debug_toolbar.urls")),
 ]

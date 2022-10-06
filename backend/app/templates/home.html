@@ -14,10 +14,18 @@
     </div>
         <ul class="list-group list-group-flush">
         {% for todo in unsorted_todos %}
-            <li class="list-group-item"><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
+            {% include "components/todos/card_todo.html" with todo=todo %}
         {% endfor %}
 
-            <li class="list-group-item"><a href="{% url 'todo-create' %}">New Task</a></li>
+            <li class="list-group-item">
+                <button
+                hx-get="{% url 'htmx-todo-card-form' %}"
+                hx-trigger="click"
+                hx-target="closest li"
+                hx-swap="beforebegin"
+                type="button" class="btn btn-dark">+</button>
+
+            </li>
         </ul>
 </div>
 
@@ -29,13 +37,18 @@
     </div>
     <ul class="list-group list-group-flush">
         {% for todo in category.todos.all %}
-            <li class="list-group-item"><a href="{% url 'todo-complete' id=todo.id %}">X</a> {{ todo.text }}</li>
+            {% include "components/todos/card_todo.html" with todo=todo %}
         {% endfor %}
 
-            <li class="list-group-item">
-                <a href="{% url 'todo-create' category_id=category.id %}">New Task</a>
-                <a href="{% url 'todo-category-delete' id=category.id %}">Close</a>
-            </li>
+        <li class="list-group-item">
+            <button
+                hx-get="{% url 'htmx-todo-card-form' category_id=category.id %}"
+                hx-trigger="click"
+                hx-target="closest li"
+                hx-swap="beforebegin"
+            type="button" class="btn btn-dark">+</button>
+            <a href="{% url 'todo-category-delete' id=category.id %}">Close</a>
+        </li>
     </ul>
 </div>
 {% endfor %}

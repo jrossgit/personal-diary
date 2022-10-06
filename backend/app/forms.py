@@ -5,6 +5,7 @@ from app import models
 
 
 class NewTodoForm(forms.ModelForm):
+
     class Meta:
         model = models.Todos
         fields = ["category", "text"]

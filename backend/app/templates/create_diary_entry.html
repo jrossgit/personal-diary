@@ -13,7 +13,7 @@
 
 {% for entry in recent_entries %}
 <h2>{{ entry.date }}</h2>
-<p>{{ entry.text }}</p>
+<p>{{ entry.text|linebreaks }}</p>
 {% endfor %}
 
 {% endblock content %}

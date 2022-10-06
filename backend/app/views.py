@@ -1,6 +1,4 @@
 import datetime
-import re
-from unicodedata import category
 
 from django.db.models import Prefetch
 from django.shortcuts import render, redirect, reverse
@@ -40,18 +38,15 @@ def home_view(request):
 def create_todo(request, category_id=None):
     if request.method == "GET":
 
-        initial = {}
-        if category_id:
-            initial["category"] = models.TodoCategory.objects.get(id=category_id).id
-
-        new_todo_form = forms.NewTodoForm(initial=initial)
+        new_todo_form = forms.NewTodoForm(initial={"category": category_id})
         return render(request, template_name="create_todo.html", context={
             "form": new_todo_form,
         })
     elif request.method == "POST":
         form = forms.NewTodoForm(request.POST)
         todo = form.save()
-        return redirect(f"{reverse('home')}#{todo.category.card_slug}")
+        redirect_slug = f"#{todo.category.card_slug}" if todo.category else ""
+        return redirect(f"{reverse('home')}{redirect_slug}")
 
 
 def create_todo_category(request):
@@ -99,7 +94,7 @@ def create_update_diary_entry(request):
             date__lte=datetime.date.today() - datetime.timedelta(days=1),
             date__gte=datetime.date.today() - datetime.timedelta(days=14),
             category__isnull=True
-        )
+        ).order_by("-date")
         return render(request, template_name="create_diary_entry.html", context={
             "form": form,
             "today": datetime.date.today(),

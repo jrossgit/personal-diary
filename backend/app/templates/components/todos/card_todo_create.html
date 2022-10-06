@@ -1,0 +1,11 @@
+<li class="list-group-item">
+    <form
+        hx-post="{% url 'htmx-todo-card-form' %}"
+        hx-trigger="submit"
+        hx-swap="outerHTML"
+        hx-target="closest li" >
+    {% csrf_token %}
+    {{ form }}
+    <input type="submit" value="+">
+    </form>
+</li>

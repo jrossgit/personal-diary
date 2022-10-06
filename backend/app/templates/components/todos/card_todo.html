@@ -1,0 +1,8 @@
+<li class="list-group-item"
+    hx-get="{% url 'htmx-todo-card-form' todo_id=todo.id %}"
+    hx-trigger="dblclick"
+    hx-target="this"
+    hx-swap="outerHTML">
+    <a href="{% url 'todo-complete' id=todo.id %}">X</a>
+    {{ todo.text }}
+</li>
