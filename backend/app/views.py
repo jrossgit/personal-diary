@@ -68,13 +68,13 @@ def delete_todo_category(request, id):
     return redirect("home")
 
 
-def create_update_diary_entry(request):
+def create_update_diary_entry(request, entry_id=None):
 
-    try:
+    if entry_id:
         diary_entry = models.DiaryEntry.objects.get(
-            date=datetime.date.today(), category__isnull=True)
-    except models.DiaryEntry.DoesNotExist:
-        diary_entry = None
+            id=entry_id, category__isnull=True)
+    else:
+        diary_entry, _ = models.DiaryEntry.objects.get_or_create(date=datetime.date.today(), category__isnull=True)
 
     if request.method == "GET":
         form = forms.DiaryEntryForm(instance=diary_entry)
@@ -83,7 +83,9 @@ def create_update_diary_entry(request):
             date__gte=datetime.date.today() - datetime.timedelta(days=14),
             category__isnull=True
         ).order_by("-date")
+
         return render(request, template_name="create_diary_entry.html", context={
+            "entry": diary_entry,
             "form": form,
             "today": datetime.date.today(),
             "recent_entries": recent_entries,

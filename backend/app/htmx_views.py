@@ -3,8 +3,8 @@ import datetime
 from django.shortcuts import HttpResponse, render
 from django.forms import HiddenInput
 
-from app.forms import NewTodoForm
-from app.models import Todos
+from app.forms import DiaryEntryForm, NewTodoForm
+from app.models import DiaryEntry, Todos
 
 
 def create_todo_htmx_form(request, category_id=None, todo_id=None):
@@ -39,3 +39,32 @@ def complete_todo(request, todo_id):
         todo.save()
 
     return HttpResponse(status=203)
+
+
+def create_diary_entry_htmx_form(request, diary_entry_id=None):
+
+    if diary_entry_id:
+        diary_entry = DiaryEntry.objects.get(
+            id=diary_entry_id, category__isnull=True)
+    else:
+        diary_entry, _ = DiaryEntry.objects.get_or_create(date=datetime.date.today(), category__isnull=True)
+
+    if request.method == "GET":
+        if diary_entry_id:
+            form = DiaryEntryForm(instance=DiaryEntry.objects.get(id=diary_entry_id))
+        else:
+            form = DiaryEntryForm(initial={"text": diary_entry_id})
+
+        return render(
+            request,
+            "components/diary/diary_form.html",
+            context={"form": form, "inline_form": True, "entry": diary_entry}
+        )
+
+    elif request.method == "POST":
+        form = DiaryEntryForm(request.POST, instance=diary_entry)
+        form.save()
+        return render(
+            request,
+            "components/diary/diary_entry.html",
+            context={"entry": diary_entry})

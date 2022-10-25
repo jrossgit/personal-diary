@@ -5,11 +5,12 @@ services:
     build:
       context: ./backend
       target: build
-    command: bash -c "python manage.py migrate && uwsgi config/uwsgi.ini"
+    command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && uwsgi config/uwsgi.ini"
     ports:
       - 9191:8000
     volumes:
       - "sqlite_data:/app/data"
+      - "assets:/static"
     environment:
       - ALLOWED_HOSTS=localhost,0.0.0.0
       - DEBUG=0
@@ -17,6 +18,7 @@ services:
       - SQL_DATABASE=${SQL_DATABASE}
       - SQL_USER=${SQL_USER}
       - SQL_PASSWORD=${SQL_PASSWORD}
+      - STATIC_ROOT=/static
 
   nginx:
     build: ./nginx
@@ -24,6 +26,9 @@ services:
       - 1337:80
     depends_on:
       - web
+    volumes:
+      - "assets:/static"
 
 volumes:
   sqlite_data:
+  assets:

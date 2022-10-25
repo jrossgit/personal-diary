@@ -1,0 +1,22 @@
+{% load django_bootstrap5 %}
+
+{% if inline_form %}
+<form
+        hx-post="{% url 'htmx-diary-entry-create-form' diary_entry_id=entry.id %}"
+        hx-trigger="submit"
+        hx-swap="outerHTML"
+        hx-target="this" >
+    {% csrf_token %}
+    {% bootstrap_form form %}
+    <input type="submit" value="Update">
+</form>
+
+{% else %}
+<form
+        hx-post="{% url 'htmx-diary-entry-create-form' diary_entry_id=entry.id %}"
+        hx-trigger="change throttle:2s"
+        hx-swap="none">
+    {% csrf_token %}
+    {% bootstrap_form form %}
+</form>
+{% endif %}

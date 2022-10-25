@@ -33,5 +33,8 @@ urlpatterns = [
     path("htmx/todocategory/:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
     path("htmx/todocategory/<uuid:category_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
 
+    path("htmx/diary/<uuid:diary_entry_id>:form", htmx_views.create_diary_entry_htmx_form, name="htmx-diary-entry-create-form"),
+    path("htmx/diary/:form", htmx_views.create_diary_entry_htmx_form, name="htmx-diary-entry-create-form"),
+
     path("__debug__/", include("debug_toolbar.urls")),
 ]
