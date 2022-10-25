@@ -1,6 +1,10 @@
 <li class="list-group-item">
     <form
+        {% if todo_id %}
+        hx-post="{% url 'htmx-todo-card-form' todo_id=todo_id %}"
+        {% else %}
         hx-post="{% url 'htmx-todo-card-form' %}"
+        {% endif %}
         hx-trigger="submit"
         hx-swap="outerHTML"
         hx-target="closest li" >

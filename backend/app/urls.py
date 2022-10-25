@@ -24,7 +24,6 @@ urlpatterns = [
     path("todocategory/<uuid:category_id>/todo", views.create_todo, name="todo-create"),
 
     path("todocategory", views.create_todo_category, name="todo-category-create"),
-    path("todocategory/<uuid:id>/delete", views.delete_todo_category, name="todo-category-delete"),
 
     path("diary", views.create_update_diary_entry, name="diary-create-update"),
 
@@ -32,6 +31,7 @@ urlpatterns = [
     path("htmx/todo/<uuid:todo_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
     path("htmx/todocategory/:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
     path("htmx/todocategory/<uuid:category_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
+    path("htmx/todocategory/<uuid:id>:delete", htmx_views.delete_todo_category, name="htmx-todo-category-delete"),
 
     path("htmx/diary/<uuid:diary_entry_id>:form", htmx_views.create_diary_entry_htmx_form, name="htmx-diary-entry-create-form"),
     path("htmx/diary/:form", htmx_views.create_diary_entry_htmx_form, name="htmx-diary-entry-create-form"),

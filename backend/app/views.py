@@ -60,14 +60,6 @@ def create_todo_category(request):
         return redirect("home")
 
 
-def delete_todo_category(request, id):
-
-    category = models.TodoCategory.objects.get(id=id)
-    category.deactivate_time = datetime.datetime.now()
-    category.save()
-    return redirect("home")
-
-
 def create_update_diary_entry(request, entry_id=None):
 
     if entry_id:

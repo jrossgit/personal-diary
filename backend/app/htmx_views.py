@@ -4,7 +4,7 @@ from django.shortcuts import HttpResponse, render
 from django.forms import HiddenInput
 
 from app.forms import DiaryEntryForm, NewTodoForm
-from app.models import DiaryEntry, Todos
+from app.models import DiaryEntry, TodoCategory, Todos
 
 
 def create_todo_htmx_form(request, category_id=None, todo_id=None):
@@ -20,11 +20,14 @@ def create_todo_htmx_form(request, category_id=None, todo_id=None):
         return render(
             request,
             "components/todos/card_todo_create.html",
-            context={"form": form}
+            context={"form": form, "todo_id": todo_id}
         )
 
     elif request.method == "POST":
-        form = NewTodoForm(request.POST)
+        if todo_id:
+            form = NewTodoForm(request.POST, instance=Todos.objects.get(id=todo_id))
+        else:
+            form = NewTodoForm(request.POST)
         todo = form.save()
         return render(
             request,
@@ -68,3 +71,11 @@ def create_diary_entry_htmx_form(request, diary_entry_id=None):
             request,
             "components/diary/diary_entry.html",
             context={"entry": diary_entry})
+
+
+def delete_todo_category(request, id):
+
+    category = TodoCategory.objects.get(id=id)
+    category.deactivate_time = datetime.datetime.now()
+    category.save()
+    return HttpResponse(status=203)
