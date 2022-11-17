@@ -1,0 +1,11 @@
+[default]
+ALLOWED_HOSTS = ["localhost", "0.0.0.0"]
+DEBUG = 1
+SECRET_KEY = "foo"
+SQL_ENGINE = "django.db.backends.postgresql"
+SQL_DATABASE = "test_db"
+SQL_USER = "django_admin"
+SQL_PASSWORD = "hello_django"
+SQL_HOST = "localhost"
+SQL_PORT = 5432
+STATIC_ROOT = "./static"

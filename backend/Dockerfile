@@ -26,7 +26,6 @@ FROM base AS build
 
 COPY . /app
 WORKDIR /app
-RUN mkdir data
 
 # Install Python dependencies
 COPY --from=requirements requirements.txt .
