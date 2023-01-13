@@ -4,14 +4,14 @@ from django.shortcuts import HttpResponse, render
 from django.forms import HiddenInput
 
 from app.forms import DiaryEntryForm, NewTodoForm
-from app.models import DiaryEntry, TodoCategory, Todos
+from app.models import DiaryEntry, TodoCategory, Todo
 
 
 def create_todo_htmx_form(request, category_id=None, todo_id=None):
 
     if request.method == "GET":
         if todo_id:
-            form = NewTodoForm(instance=Todos.objects.get(id=todo_id))
+            form = NewTodoForm(instance=Todo.objects.get(id=todo_id))
         else:
             form = NewTodoForm(initial={"category": category_id})
 
@@ -25,7 +25,7 @@ def create_todo_htmx_form(request, category_id=None, todo_id=None):
 
     elif request.method == "POST":
         if todo_id:
-            form = NewTodoForm(request.POST, instance=Todos.objects.get(id=todo_id))
+            form = NewTodoForm(request.POST, instance=Todo.objects.get(id=todo_id))
         else:
             form = NewTodoForm(request.POST)
         todo = form.save()
@@ -35,8 +35,17 @@ def create_todo_htmx_form(request, category_id=None, todo_id=None):
             context={"todo": todo})
 
 
+def todo_htmx(request, todo_id):
+    """Fetch the todo row for a card"""
+    todo = Todo.objects.get(id=todo_id)
+    return render(
+        request,
+        "components/todos/card_todo.html",
+        context={"todo": todo})
+
+
 def complete_todo(request, todo_id):
-    todo = Todos.objects.get(id=todo_id)
+    todo = Todo.objects.get(id=todo_id)
     if not todo.complete_time:
         todo.complete_time = datetime.datetime.now()
         todo.save()

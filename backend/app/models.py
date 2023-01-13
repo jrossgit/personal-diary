@@ -5,7 +5,7 @@ from django.utils.text import slugify
 
 
 # TODO Rename this as `Todo`
-class Todos(models.Model):
+class Todo(models.Model):
 
     class Meta:
         ordering = ["-create_time"]

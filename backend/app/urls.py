@@ -29,6 +29,7 @@ urlpatterns = [
 
     path("htmx/todo/<uuid:todo_id>:delete", htmx_views.complete_todo, name="htmx-todo-complete"),
     path("htmx/todo/<uuid:todo_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
+    path("htmx/todo/<uuid:todo_id>", htmx_views.todo_htmx, name="htmx-todo"),
     path("htmx/todocategory/:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
     path("htmx/todocategory/<uuid:category_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
     path("htmx/todocategory/<uuid:id>:delete", htmx_views.delete_todo_category, name="htmx-todo-category-delete"),

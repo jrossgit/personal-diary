@@ -7,10 +7,10 @@ from app import forms, models
 
 
 def home_view(request):
-    unsorted_todos = models.Todos.objects.filter(
+    unsorted_todos = models.Todo.objects.filter(
         complete_time__isnull=True,
         category__isnull=True)
-    sorted_todos = models.Todos.objects.filter(
+    sorted_todos = models.Todo.objects.filter(
         complete_time__isnull=True,
         category__isnull=False
     ).order_by("category__name")
@@ -20,7 +20,7 @@ def home_view(request):
     ).prefetch_related(
         Prefetch(
             "todos",
-            queryset=models.Todos.objects.filter(
+            queryset=models.Todo.objects.filter(
                 complete_time__isnull=True,
                 category__isnull=False
             )

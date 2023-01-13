@@ -11,5 +11,10 @@
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="+">
+    <a hx-get="{% url 'htmx-todo' todo_id=todo_id %}"
+       hx-trigger="click consume"
+       hx-swap="outerHTML"
+       hx-target="closest li"
+    >Back</a>
     </form>
 </li>
