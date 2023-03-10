@@ -1,11 +1,14 @@
 import datetime
 
+from django.contrib.auth import authenticate, login
+from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch
 from django.shortcuts import render, redirect, reverse
 
 from app import forms, models
 
 
+@login_required
 def home_view(request):
     unsorted_todos = models.Todo.objects.filter(
         complete_time__isnull=True,
@@ -35,6 +38,7 @@ def home_view(request):
     })
 
 
+@login_required
 def create_todo(request, category_id=None):
     if request.method == "GET":
 
@@ -49,6 +53,7 @@ def create_todo(request, category_id=None):
         return redirect(f"{reverse('home')}{redirect_slug}")
 
 
+@login_required
 def create_todo_category(request):
     if request.method == "GET":
         return render(request, template_name="create_todo_category.html", context={
@@ -60,6 +65,7 @@ def create_todo_category(request):
         return redirect("home")
 
 
+@login_required
 def create_update_diary_entry(request, entry_id=None):
 
     if entry_id:
@@ -87,3 +93,14 @@ def create_update_diary_entry(request, entry_id=None):
         form = forms.DiaryEntryForm(request.POST, instance=diary_entry)
         form.save()
         return redirect("diary-create-update")
+
+
+# def login(request):
+#     """Login user"""
+#     username = request.POST['username']
+#     password = request.POST['password']
+#     user = authenticate(request, username=username, password=password)
+#     if user is not None:
+#         redirect("home")
+#     else:
+#         return Response()

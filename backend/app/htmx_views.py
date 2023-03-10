@@ -17,6 +17,7 @@ def create_todo_htmx_form(request, category_id=None, todo_id=None):
 
         form.fields["category"].widget = HiddenInput()
 
+        print(f"rendering with {form} and {todo_id}")
         return render(
             request,
             "components/todos/card_todo_create.html",
@@ -33,6 +34,11 @@ def create_todo_htmx_form(request, category_id=None, todo_id=None):
             request,
             "components/todos/card_todo.html",
             context={"todo": todo})
+
+
+def delete_element(request):
+    """Return nothing so the frontend can delete the element"""
+    return HttpResponse(status=203)
 
 
 def todo_htmx(request, todo_id):

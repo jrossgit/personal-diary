@@ -4,7 +4,6 @@ from django.db import models
 from django.utils.text import slugify
 
 
-# TODO Rename this as `Todo`
 class Todo(models.Model):
 
     class Meta:

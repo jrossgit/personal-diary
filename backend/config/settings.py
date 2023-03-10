@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY", "test_secret")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = os.environ.get("DEBUG", False)
+DEBUG = bool(os.environ.get("DEBUG")) or False
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1").split(",")
 
@@ -135,3 +135,5 @@ USE_TZ = False
 
 STATIC_URL = "static/"
 STATIC_ROOT = os.environ.get("STATIC_ROOT", "static")
+
+LOGIN_REDIRECT_URL = "/"
