@@ -1,6 +1,6 @@
 import datetime
 
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.db.models import Prefetch
 from django.shortcuts import render, redirect, reverse
@@ -95,12 +95,6 @@ def create_update_diary_entry(request, entry_id=None):
         return redirect("diary-create-update")
 
 
-# def login(request):
-#     """Login user"""
-#     username = request.POST['username']
-#     password = request.POST['password']
-#     user = authenticate(request, username=username, password=password)
-#     if user is not None:
-#         redirect("home")
-#     else:
-#         return Response()
+def logout_view(request):
+    logout(request)
+    return redirect("login")

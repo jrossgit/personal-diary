@@ -21,6 +21,7 @@ from django.urls import include, path
 
 urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
+    path("logout", views.logout_view, name="log-out"),
 
     path("", views.home_view, name="home"),
     path("todo", views.create_todo, name="todo-create"),
