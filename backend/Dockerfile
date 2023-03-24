@@ -14,7 +14,7 @@ RUN ln -s /usr/bin/python3 /usr/bin/python
 ### Poetry installation and setup
 FROM base as requirements
 
-RUN curl -sSL https://install.python-poetry.org | python3 - --version 1.1.7
+RUN curl -sSL https://install.python-poetry.org | python3 - --version 1.3.2
 ENV PATH="/root/.local/bin:/usr/bin:$PATH"
 
 COPY pyproject.toml poetry.lock ./
