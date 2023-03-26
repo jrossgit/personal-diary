@@ -33,6 +33,7 @@ urlpatterns = [
 
     path("htmx:delete", htmx_views.delete_element, name="htmx-delete-element"),
 
+    path("htmx/home/completed_today", htmx_views.get_count_today, name="htmx-todo-count-today"),
     path("htmx/todo/<uuid:todo_id>:delete", htmx_views.complete_todo, name="htmx-todo-complete"),
     path("htmx/todo/<uuid:todo_id>:form", htmx_views.create_todo_htmx_form, name="htmx-todo-card-form"),
     path("htmx/todo/<uuid:todo_id>", htmx_views.todo_htmx, name="htmx-todo"),

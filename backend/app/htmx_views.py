@@ -56,7 +56,16 @@ def complete_todo(request, todo_id):
         todo.complete_time = datetime.datetime.now()
         todo.save()
 
-    return HttpResponse(status=203)
+    response = HttpResponse(status=203)
+    response["HX-Trigger"] = "refreshCountToday"
+    return response
+
+
+def get_count_today(request):
+    return render(
+        request,
+        "components/todos/completed_today_counter.html",
+        context={"number": Todo.objects.completed_today().count()})
 
 
 def create_diary_entry_htmx_form(request, diary_entry_id=None):

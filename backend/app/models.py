@@ -1,10 +1,22 @@
+from datetime import date
 import uuid
 
 from django.db import models
 from django.utils.text import slugify
 
 
+class TodoManager(models.Manager):
+
+    def completed_on_date(self, date):
+        return self.filter(complete_time__date=date)
+
+    def completed_today(self):
+        return self.completed_on_date(date.today())
+
+
 class Todo(models.Model):
+
+    objects = TodoManager()
 
     class Meta:
         ordering = ["-create_time"]

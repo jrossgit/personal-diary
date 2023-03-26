@@ -1,0 +1,4 @@
+<span style="float:right"
+      id="completed_today"
+      hx-get="{% url 'htmx-todo-count-today' %}"
+      hx-trigger="refreshCountToday from:body">Completed Today: <span style="color:green">{{number}}</span></span>
