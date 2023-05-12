@@ -7,33 +7,33 @@ from app.forms import DiaryEntryForm, NewTodoForm
 from app.models import DiaryEntry, TodoCategory, Todo
 
 
-def create_todo_htmx_form(request, category_id=None, todo_id=None):
+# def create_todo_htmx_form(request, category_id=None, todo_id=None):
 
-    if request.method == "GET":
-        if todo_id:
-            form = NewTodoForm(instance=Todo.objects.get(id=todo_id))
-        else:
-            form = NewTodoForm(initial={"category": category_id})
+#     if request.method == "GET":
+#         if todo_id:
+#             form = NewTodoForm(instance=Todo.objects.get(id=todo_id))
+#         else:
+#             form = NewTodoForm(initial={"category": category_id})
 
-        form.fields["category"].widget = HiddenInput()
+#         form.fields["category"].widget = HiddenInput()
 
-        print(f"rendering with {form} and {todo_id}")
-        return render(
-            request,
-            "components/todos/card_todo_create.html",
-            context={"form": form, "todo_id": todo_id}
-        )
+#         print(f"rendering with {form} and {todo_id}")
+#         return render(
+#             request,
+#             "components/todos/card_todo_create.html",
+#             context={"form": form, "todo_id": todo_id}
+#         )
 
-    elif request.method == "POST":
-        if todo_id:
-            form = NewTodoForm(request.POST, instance=Todo.objects.get(id=todo_id))
-        else:
-            form = NewTodoForm(request.POST)
-        todo = form.save()
-        return render(
-            request,
-            "components/todos/card_todo.html",
-            context={"todo": todo})
+#     elif request.method == "POST":
+#         if todo_id:
+#             form = NewTodoForm(request.POST, instance=Todo.objects.get(id=todo_id))
+#         else:
+#             form = NewTodoForm(request.POST)
+#         todo = form.save()
+#         return render(
+#             request,
+#             "components/todos/card_todo.html",
+#             context={"todo": todo})
 
 
 def delete_element(request):
@@ -59,13 +59,6 @@ def complete_todo(request, todo_id):
     response = HttpResponse(status=203)
     response["HX-Trigger"] = "refreshCountToday"
     return response
-
-
-def get_count_today(request):
-    return render(
-        request,
-        "components/todos/completed_today_counter.html",
-        context={"number": Todo.objects.completed_today().count()})
 
 
 def create_diary_entry_htmx_form(request, diary_entry_id=None):

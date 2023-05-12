@@ -7,7 +7,7 @@
         {% endif %}
         hx-trigger="submit"
         hx-swap="outerHTML"
-        hx-target="closest li" >
+        hx-target="closest li">
     {% csrf_token %}
     {{ form }}
     <input type="submit" value="+">
