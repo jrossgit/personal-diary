@@ -1,5 +1,5 @@
 <div class="diary-entry"
-    hx-get="{% url 'htmx-diary-entry-create-form' diary_entry_id=entry.id %}"
+    hx-get="{% url 'htmx-diary-entry-create-form' pk=entry.id %}"
     hx-trigger="dblclick"
     hx-target="closest div"
     hx-swap="outerHTML">

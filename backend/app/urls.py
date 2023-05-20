@@ -30,15 +30,6 @@ urlpatterns = [
 
     path("diary", views.create_update_diary_entry, name="diary-create-update"),
 
-    path("htmx:delete", htmx_views.delete_element, name="htmx-delete-element"),
-
-    path("htmx/todo/<uuid:todo_id>:delete", htmx_views.complete_todo, name="htmx-todo-complete"),
-    path("htmx/todo/<uuid:todo_id>", htmx_views.todo_htmx, name="htmx-todo"),
-    path("htmx/todocategory/<uuid:id>:delete", htmx_views.delete_todo_category, name="htmx-todo-category-delete"),
-
-    path("htmx/diary/<uuid:diary_entry_id>:form", htmx_views.create_diary_entry_htmx_form, name="htmx-diary-entry-create-form"),
-    path("htmx/diary/:form", htmx_views.create_diary_entry_htmx_form, name="htmx-diary-entry-create-form"),
-
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 

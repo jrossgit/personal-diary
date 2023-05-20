@@ -43,14 +43,14 @@
 
         <li class="list-group-item">
             <button
-                hx-get="{% url 'htmx-todo-card-form' category_id=category.id %}"
+                hx-get="{% url 'htmx-todo-card-form' category_pk=category.id %}"
                 hx-trigger="click"
                 hx-target="closest li"
                 hx-swap="beforebegin"
             type="button" class="btn btn-dark">New Task</button>
             <button
             class="btn btn-warning"
-            hx-delete="{% url 'htmx-todo-category-delete' id=category.id %}"
+            hx-delete="{% url 'htmx-todo-category-delete' pk=category.id %}"
             hx-trigger="click"
             hx-swap="delete"
             hx-target="#category-{{category.name|slugify}}"

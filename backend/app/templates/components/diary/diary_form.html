@@ -2,7 +2,7 @@
 
 {% if inline_form %}
 <form
-        hx-post="{% url 'htmx-diary-entry-create-form' diary_entry_id=entry.id %}"
+        hx-post="{% url 'htmx-diary-entry-create-form' pk=entry.id %}"
         hx-trigger="submit"
         hx-swap="outerHTML"
         hx-target="this" >
@@ -13,7 +13,7 @@
 
 {% else %}
 <form
-        hx-post="{% url 'htmx-diary-entry-create-form' diary_entry_id=entry.id %}"
+        hx-post="{% url 'htmx-diary-entry-create-form' pk=entry.id %}"
         hx-trigger="change throttle:2s"
         hx-swap="none">
     {% csrf_token %}
