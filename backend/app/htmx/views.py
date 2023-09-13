@@ -56,6 +56,35 @@ class TaskCreateFormHTMXView(FormView):
         )
 
 
+class TaskCategoryCreateFormHTMXView(FormView):
+    # TODO: Todo should be able to return whole new card
+    def get(self, request, *args, **kwargs):
+        if "todo_category_id" in kwargs:
+            print("Got an id yay")
+            form = forms.NewTodoCategoryForm(instance=models.TodoCategory.objects.get(id=kwargs["todo_category_id"]))
+        else:
+            form = forms.NewTodoCategoryForm()
+
+        return render(
+            request,
+            "components/todos/card_todo_card_blank_create.html",
+            context={"form": form, "todo_category_id": kwargs.get("todo_category_id")}
+        )
+
+    def post(self, request, *args, **kwargs):
+        if "todo_category_id" in kwargs:
+            form = forms.NewTodoCategoryForm(request.POST, instance=models.TodoCategory.objects.get(id=kwargs["todo_category_id"]))
+        else:
+            form = forms.NewTodoCategoryForm(request.POST)
+        todo_category = form.save()
+
+        return render(
+            request,
+            "components/todos/card_todo_header.html",
+            context={"category": todo_category}
+        )
+
+
 def htmx_complete_todo(request, todo_id):
 
     todo = models.Todo.objects.get(id=todo_id)
@@ -72,6 +101,11 @@ class TaskRetrieveHTMXView(HTMXTemplateMixin, TemplateView):
     def get_context_data(self, **kwargs):
         return {"todo": models.Todo.objects.get(id=self.kwargs["todo_id"])}
 
+
+class TaskCategoryRetrieveHTMXView(HTMXTemplateMixin, TemplateView):
+
+    def get_context_data(self, **kwargs):
+        return {"category": models.TodoCategory.objects.get(id=self.kwargs["todo_category_id"])}
 
 
 class DiaryCreateFormHTMXView(FormView):

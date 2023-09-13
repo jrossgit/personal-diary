@@ -1,0 +1,22 @@
+<div class="card-body bg-primary text-white">
+    <h4 class="card-title">
+        <form
+            {% if todo_category_id %}
+                hx-post="{% url 'htmx-todo-category-form' todo_category_id=todo_category_id %}"
+            {% else %}
+                hx-post="{% url 'htmx-todo-category-form' %}"
+            {% endif %}
+            hx-trigger="submit"
+            hx-swap="outerHTML"
+            hx-target="closest div">
+            {% csrf_token %}
+            {{ form }}
+            <input type="submit" value=" -> ">
+            <a hx-get="{% url 'htmx-todo-category' todo_category_id=todo_category_id %}?component=todos/card_todo_header"
+            hx-trigger="click consume"
+            hx-swap="outerHTML"
+            hx-target="closest div"
+            >Back</a>
+        </form>
+    </h4>
+</div>

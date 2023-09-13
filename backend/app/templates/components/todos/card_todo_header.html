@@ -1,0 +1,9 @@
+<div class="card-body bg-primary text-white"
+    hx-get="{% url 'htmx-todo-category-form' todo_category_id=category.id %}"
+    hx-trigger="dblclick"
+    hx-target="this"
+    hx-swap="outerHTML">
+    <h4 class="card-title">
+        {{ category.name }}
+    </h4>
+</div>
