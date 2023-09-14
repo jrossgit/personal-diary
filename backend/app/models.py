@@ -25,7 +25,7 @@ class Todo(models.Model):
         return self.text
 
     id = models.fields.UUIDField(verbose_name="Todo UUID", primary_key=True, default=uuid.uuid4)
-    text = models.fields.CharField(verbose_name="What to do?", max_length=256)
+    text = models.fields.CharField(verbose_name="", max_length=256)
     create_time = models.DateTimeField(verbose_name="Time todo created", auto_now_add=True)
     complete_time = models.DateTimeField(verbose_name="Time todo completed", null=True, blank=True)
 

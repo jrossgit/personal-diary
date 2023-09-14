@@ -34,3 +34,17 @@ h1, h2, h3, h4, h5 {
     background-color: hotpink;
     color: white;
 }
+
+.icon-small {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-fill {
+    width: 24px;
+    height: 24px;
+}
+
+.list-group-item {
+    padding: 5px 10px;
+}

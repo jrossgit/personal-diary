@@ -1,3 +1,5 @@
+{% load static %}
+
 <li class="list-group-item"
     hx-get="{% url 'htmx-todo-card-form' todo_id=todo.id %}"
     hx-trigger="dblclick"
@@ -6,6 +8,6 @@
     <a hx-delete="{% url 'htmx-todo-complete' todo_id=todo.id %}"
        hx-trigger="click"
        hx-swap="delete"
-    >X</a>
+    ><img src="{% static 'icons/check.svg' %}" alt="Complete" class="icon-small"></a>
     {{ todo.text }}
 </li>

@@ -1,3 +1,5 @@
 
 # Ignore dynaconf secret files
 .secrets.*
+
+app/static/icons/_all

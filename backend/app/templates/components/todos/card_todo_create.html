@@ -1,3 +1,5 @@
+{% load static %}
+
 <li class="list-group-item">
     <form
         {% if todo_id %}
@@ -10,15 +12,17 @@
         hx-target="closest li">
     {% csrf_token %}
     {{ form }}
-    <input type="submit" value="+">
+    <input class="btn btn-success btn-sm" type="submit" style="width:24px,height:24px" value="Submit">
     {% if todo_id %}
-        <a hx-get="{% url 'htmx-todo' todo_id=todo_id %}?component=todos/card_todo"
+        <a class="btn btn-danger btn-sm"
+        hx-get="{% url 'htmx-todo' todo_id=todo_id %}?component=todos/card_todo"
         hx-trigger="click consume"
         hx-swap="outerHTML"
         hx-target="closest li"
         >Back</a>
     {% else %}
-        <a hx-get="{% url 'htmx-delete-element' %}"
+        <a class="btn btn-danger btn-sm"
+            hx-get="{% url 'htmx-delete-element' %}"
             hx-trigger="click consume"
             hx-swap="delete"
             hx-target="closest li"
