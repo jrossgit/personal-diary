@@ -9,8 +9,5 @@ def create_brainworm_todo(request):
     if request.method == "POST":
         brainworms_cat, _ = models.TodoCategory.objects.get_or_create(name="Brainworms")
         print(brainworms_cat)
-        models.Todo.objects.create(
-            category=brainworms_cat,
-            text=request.data["text"]
-        )
+        models.Todo.objects.create(category=brainworms_cat, text=request.data["text"])
     return Response({"message": "Successful"})

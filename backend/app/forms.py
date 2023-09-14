@@ -5,7 +5,6 @@ from app import models
 
 
 class NewTodoForm(forms.ModelForm):
-
     class Meta:
         model = models.Todo
         fields = ["category", "text"]
@@ -18,7 +17,6 @@ class NewTodoCategoryForm(forms.ModelForm):
 
 
 class DiaryEntryForm(forms.ModelForm):
-
     text = forms.CharField(label="Diary", widget=forms.Textarea)
 
     class Meta:

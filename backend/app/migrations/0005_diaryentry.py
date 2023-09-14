@@ -6,19 +6,35 @@ import uuid
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0004_alter_todos_category'),
+        ("app", "0004_alter_todos_category"),
     ]
 
     operations = [
         migrations.CreateModel(
-            name='DiaryEntry',
+            name="DiaryEntry",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False, verbose_name='Todo UUID')),
-                ('text', models.TextField()),
-                ('date', models.DateField(auto_now_add=True)),
-                ('category', models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='diary_entries', to='app.todocategory')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="Todo UUID",
+                    ),
+                ),
+                ("text", models.TextField()),
+                ("date", models.DateField(auto_now_add=True)),
+                (
+                    "category",
+                    models.ForeignKey(
+                        blank=True,
+                        null=True,
+                        on_delete=django.db.models.deletion.CASCADE,
+                        related_name="diary_entries",
+                        to="app.todocategory",
+                    ),
+                ),
             ],
         ),
     ]

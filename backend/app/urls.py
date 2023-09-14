@@ -21,20 +21,18 @@ from django.urls import include, path
 urlpatterns = [
     path("accounts/", include("django.contrib.auth.urls")),
     path("logout", views.logout_view, name="log-out"),
-
     path("", views.home_view, name="home"),
     path("todo", views.create_todo, name="todo-create"),
     path("todocategory/<uuid:category_id>/todo", views.create_todo, name="todo-create"),
-
     path("todocategory", views.create_todo_category, name="todo-category-create"),
-
     path("diary", views.create_update_diary_entry, name="diary-create-update"),
-
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 
-urlpatterns.extend([
-    path("api/brainworms", api_views.create_brainworm_todo, name="brainworms"),
-])
+urlpatterns.extend(
+    [
+        path("api/brainworms", api_views.create_brainworm_todo, name="brainworms"),
+    ]
+)
 
 urlpatterns.extend([path("htmx/", include("app.htmx.urls"))])

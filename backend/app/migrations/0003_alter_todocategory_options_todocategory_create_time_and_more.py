@@ -5,25 +5,30 @@ import django.utils.timezone
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0002_todocategory_todos_category'),
+        ("app", "0002_todocategory_todos_category"),
     ]
 
     operations = [
         migrations.AlterModelOptions(
-            name='todocategory',
-            options={'ordering': ['name']},
+            name="todocategory",
+            options={"ordering": ["name"]},
         ),
         migrations.AddField(
-            model_name='todocategory',
-            name='create_time',
-            field=models.DateTimeField(auto_now_add=True, default=django.utils.timezone.now, verbose_name='Time todo created'),
+            model_name="todocategory",
+            name="create_time",
+            field=models.DateTimeField(
+                auto_now_add=True,
+                default=django.utils.timezone.now,
+                verbose_name="Time todo created",
+            ),
             preserve_default=False,
         ),
         migrations.AddField(
-            model_name='todocategory',
-            name='deactivate_time',
-            field=models.DateTimeField(blank=True, null=True, verbose_name='Time todo completed'),
+            model_name="todocategory",
+            name="deactivate_time",
+            field=models.DateTimeField(
+                blank=True, null=True, verbose_name="Time todo completed"
+            ),
         ),
     ]

@@ -5,15 +5,20 @@ import django.db.models.deletion
 
 
 class Migration(migrations.Migration):
-
     dependencies = [
-        ('app', '0003_alter_todocategory_options_todocategory_create_time_and_more'),
+        ("app", "0003_alter_todocategory_options_todocategory_create_time_and_more"),
     ]
 
     operations = [
         migrations.AlterField(
-            model_name='todos',
-            name='category',
-            field=models.ForeignKey(blank=True, null=True, on_delete=django.db.models.deletion.CASCADE, related_name='todos', to='app.todocategory'),
+            model_name="todos",
+            name="category",
+            field=models.ForeignKey(
+                blank=True,
+                null=True,
+                on_delete=django.db.models.deletion.CASCADE,
+                related_name="todos",
+                to="app.todocategory",
+            ),
         ),
     ]

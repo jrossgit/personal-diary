@@ -5,23 +5,39 @@ import uuid
 
 
 class Migration(migrations.Migration):
-
     initial = True
 
-    dependencies = [
-    ]
+    dependencies = []
 
     operations = [
         migrations.CreateModel(
-            name='Todos',
+            name="Todos",
             fields=[
-                ('id', models.UUIDField(default=uuid.uuid4, primary_key=True, serialize=False, verbose_name='Todo UUID')),
-                ('text', models.CharField(max_length=256, verbose_name='What to do?')),
-                ('create_time', models.DateTimeField(auto_now_add=True, verbose_name='Time todo created')),
-                ('complete_time', models.DateTimeField(blank=True, null=True, verbose_name='Time todo completed')),
+                (
+                    "id",
+                    models.UUIDField(
+                        default=uuid.uuid4,
+                        primary_key=True,
+                        serialize=False,
+                        verbose_name="Todo UUID",
+                    ),
+                ),
+                ("text", models.CharField(max_length=256, verbose_name="What to do?")),
+                (
+                    "create_time",
+                    models.DateTimeField(
+                        auto_now_add=True, verbose_name="Time todo created"
+                    ),
+                ),
+                (
+                    "complete_time",
+                    models.DateTimeField(
+                        blank=True, null=True, verbose_name="Time todo completed"
+                    ),
+                ),
             ],
             options={
-                'ordering': ['-create_time'],
+                "ordering": ["-create_time"],
             },
         ),
     ]

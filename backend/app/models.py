@@ -6,7 +6,6 @@ from django.utils.text import slugify
 
 
 class TodoManager(models.Manager):
-
     def completed_on_date(self, date):
         return self.filter(complete_time__date=date)
 
@@ -15,7 +14,6 @@ class TodoManager(models.Manager):
 
 
 class Todo(models.Model):
-
     objects = TodoManager()
 
     class Meta:
@@ -24,16 +22,27 @@ class Todo(models.Model):
     def __str__(self):
         return self.text
 
-    id = models.fields.UUIDField(verbose_name="Todo UUID", primary_key=True, default=uuid.uuid4)
+    id = models.fields.UUIDField(
+        verbose_name="Todo UUID", primary_key=True, default=uuid.uuid4
+    )
     text = models.fields.CharField(verbose_name="", max_length=256)
-    create_time = models.DateTimeField(verbose_name="Time todo created", auto_now_add=True)
-    complete_time = models.DateTimeField(verbose_name="Time todo completed", null=True, blank=True)
+    create_time = models.DateTimeField(
+        verbose_name="Time todo created", auto_now_add=True
+    )
+    complete_time = models.DateTimeField(
+        verbose_name="Time todo completed", null=True, blank=True
+    )
 
-    category = models.ForeignKey("TodoCategory", on_delete=models.CASCADE, null=True, blank=True, related_name="todos")
+    category = models.ForeignKey(
+        "TodoCategory",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="todos",
+    )
 
 
 class TodoCategory(models.Model):
-
     class Meta:
         ordering = ["name"]
 
@@ -42,8 +51,12 @@ class TodoCategory(models.Model):
 
     id = models.fields.UUIDField(primary_key=True, default=uuid.uuid4)
     name = models.fields.CharField(max_length=256)
-    create_time = models.DateTimeField(verbose_name="Time todo created", auto_now_add=True)
-    deactivate_time = models.DateTimeField(verbose_name="Time todo completed", null=True, blank=True)
+    create_time = models.DateTimeField(
+        verbose_name="Time todo created", auto_now_add=True
+    )
+    deactivate_time = models.DateTimeField(
+        verbose_name="Time todo completed", null=True, blank=True
+    )
 
     @property
     def card_slug(self):
@@ -52,14 +65,21 @@ class TodoCategory(models.Model):
 
 
 class DiaryEntry(models.Model):
-
     def __str__(self):
         if self.category:
             return f"Diary {self.date} ({self.category.name})"
         else:
             return f"Diary {self.date}"
 
-    id = models.fields.UUIDField(verbose_name="Todo UUID", primary_key=True, default=uuid.uuid4)
+    id = models.fields.UUIDField(
+        verbose_name="Todo UUID", primary_key=True, default=uuid.uuid4
+    )
     text = models.fields.TextField()
     date = models.fields.DateField(auto_now_add=True)
-    category = models.ForeignKey("TodoCategory", on_delete=models.CASCADE, null=True, blank=True, related_name="diary_entries")
+    category = models.ForeignKey(
+        "TodoCategory",
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
+        related_name="diary_entries",
+    )
