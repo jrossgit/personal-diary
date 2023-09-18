@@ -28,6 +28,7 @@ class TaskCountTodayHTMXView(HTMXTemplateMixin, TemplateView):
 # TODO: add HTMX handling to this class
 class TaskCreateFormHTMXView(FormView):
     def get(self, request, *args, **kwargs):
+        print(f"kwargs - {kwargs}")
         if "todo_id" in kwargs:
             form = forms.NewTodoForm(
                 instance=models.Todo.objects.get(id=kwargs["todo_id"])

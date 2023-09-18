@@ -25,7 +25,7 @@
                 hx-trigger="click"
                 hx-target="closest li"
                 hx-swap="beforebegin"
-                type="button" class="btn btn-dark">+</button>
+                type="button" class="btn btn-dark">New Task</button>
             </li>
         </ul>
 </div>
@@ -47,7 +47,7 @@
 
         <li class="list-group-item">
             <button
-                hx-get="{% url 'htmx-todo-card-form' category_pk=category.id %}"
+                hx-get="{% url 'htmx-todo-card-form' category_id=category.id %}"
                 hx-trigger="click"
                 hx-target="closest li"
                 hx-swap="beforebegin"
