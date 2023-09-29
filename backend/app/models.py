@@ -12,6 +12,9 @@ class TodoManager(models.Manager):
     def completed_today(self):
         return self.completed_on_date(date.today())
 
+    def created_today(self):
+        return self.filter(create_time__date=date.today())
+
 
 class Todo(models.Model):
     objects = TodoManager()

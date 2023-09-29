@@ -22,7 +22,9 @@ class HTMXTemplateMixin:
 
 class TaskCountTodayHTMXView(HTMXTemplateMixin, TemplateView):
     def get_context_data(self, **kwargs):
-        return {"number": models.Todo.objects.completed_today().count()}
+        return {
+            "completed": models.Todo.objects.completed_today().count(),
+            "created": models.Todo.objects.created_today().count()}
 
 
 # TODO: add HTMX handling to this class
@@ -53,9 +55,11 @@ class TaskCreateFormHTMXView(FormView):
             form = forms.NewTodoForm(request.POST)
         todo = form.save()
 
-        return render(
+        response = render(
             request, "components/todos/card_todo.html", context={"todo": todo}
         )
+        response["HX-Trigger"] = "refreshCountToday"
+        return response
 
 
 class TaskCategoryCreateFormHTMXView(FormView):

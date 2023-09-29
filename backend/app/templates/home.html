@@ -3,7 +3,7 @@
 {% block content %}
 
 <h1>To Do
-    {% include "components/todos/completed_today_counter.html" with number=number_todos_today %}
+    {% include "components/todos/completed_today_counter.html" with created=number_todos_created completed=number_todos_today  %}
 </h1>
 
 <b></b>
