@@ -1,10 +1,8 @@
 <span style="float:right"
       id="completed_today"
       hx-get="{% url 'htmx-todo-count-today' %}?component=todos/completed_today_counter"
-      hx-trigger="refreshCountToday from:body">
+      hx-trigger="refreshCountToday from:body, focus from:window">
             Created: <span style="color:red">{{ created }}</span>
                   &mdash;
-            Completed: <span style="color:green">{{ completed }}
-
-            </span>
+            Completed: <span style="color:green">{{ completed }}</span>
 </span>
