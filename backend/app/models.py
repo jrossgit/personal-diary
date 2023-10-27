@@ -39,8 +39,6 @@ class Todo(models.Model):
     category = models.ForeignKey(
         "TodoCategory",
         on_delete=models.CASCADE,
-        null=True,
-        blank=True,
         related_name="todos",
     )
 

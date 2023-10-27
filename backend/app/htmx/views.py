@@ -11,9 +11,7 @@ from app import forms, models
 
 class HTMXTemplateMixin:
     """
-    Strips
     """
-
     def get_template_names(self):
         if "component" not in self.request.GET:
             raise NotImplementedError("HTMX call should define a component to return")
@@ -66,7 +64,6 @@ class TaskCategoryCreateFormHTMXView(FormView):
     # TODO: Todo should be able to return whole new card
     def get(self, request, *args, **kwargs):
         if "todo_category_id" in kwargs:
-            print("Got an id yay")
             form = forms.NewTodoCategoryForm(
                 instance=models.TodoCategory.objects.get(id=kwargs["todo_category_id"])
             )

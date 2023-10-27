@@ -35,8 +35,6 @@ def home_view(request):
             "sorted_todos": sorted_todos,
             "unsorted_todos": unsorted_todos,
             "new_categories": categories,
-            # "number_todos_created": models.Todo.objects.created_today().count(),
-            # "number_todos_today": models.Todo.objects.completed_today().count(),
             "form": forms.NewTodoForm(),
         },
     )

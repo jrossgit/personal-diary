@@ -1,0 +1,37 @@
+{% load static %}
+
+{% load django_bootstrap5 %}
+{% bootstrap_css %}
+{% bootstrap_javascript %}
+
+
+<div class="card mb-3 border-primary rounded-0 border-3" id="category-{{category.name|slugify}}">
+    <div class="card-body bg-primary text-white"
+        hx-get="{% url 'htmx-todo-category-form' todo_category_id=category.id %}"
+        hx-trigger="dblclick"
+        hx-target="this"
+        hx-swap="outerHTML">
+        <h4 class="card-title">{{ category.name }}</h4>
+    </div>
+    <ul class="list-group list-group-flush">
+        {% for todo in category.todos.all %}
+            {% include "components/todos/card_todo.html" with todo=todo %}
+        {% endfor %}
+
+        <li class="list-group-item">
+            <button
+                hx-get="{% url 'htmx-todo-card-form' category_id=category.id %}"
+                hx-trigger="click"
+                hx-target="closest li"
+                hx-swap="beforebegin"
+            type="button" class="btn btn-dark">New Task</button>
+            <button
+            class="btn btn-warning"
+            hx-delete="{% url 'htmx-todo-category-delete' pk=category.id %}"
+            hx-trigger="click"
+            hx-swap="delete"
+            hx-target="#category-{{category.name|slugify}}"
+            hx-confirm="Delete this category?">Close</button>
+        </li>
+    </ul>
+</div>
