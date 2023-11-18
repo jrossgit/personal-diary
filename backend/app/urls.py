@@ -1,4 +1,4 @@
-"""coasters URL Configuration
+"""URL Configuration
 
 The `urlpatterns` list routes URLs to views. For more information please see:
     https://docs.djangoproject.com/en/3.0/topics/http/urls/
@@ -13,12 +13,14 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path("blog/", include("blog.urls"))
 """
-from app import api_views, views
+from app import views
+from app.api import views as api_views
 
 from django.urls import include, path
 
 
 urlpatterns = [
+
     path("accounts/", include("django.contrib.auth.urls")),
     path("logout", views.logout_view, name="log-out"),
     path("", views.home_view, name="home"),
@@ -31,7 +33,8 @@ urlpatterns = [
 
 urlpatterns.extend(
     [
-        path("api/brainworms", api_views.create_brainworm_todo, name="brainworms"),
+        path("api/categories", api_views.list_todo_categories, name="list-todo-categories"),
+        path("api/categories/<uuid:category_id>/todos", api_views.create_todo, name="create-todo"),
     ]
 )
 
