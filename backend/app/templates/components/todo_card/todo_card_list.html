@@ -1,0 +1,7 @@
+<div id="todo-list">
+    {% for category in new_categories %}
+
+        {% include "components/todo_card/todo_card.html" with category=category %}
+
+    {% endfor %}
+</div>

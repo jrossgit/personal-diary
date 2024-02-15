@@ -1,10 +1,12 @@
 import datetime
+from typing import Any, Dict
 
 from django.contrib.auth import logout
 from django.contrib.auth.decorators import login_required
 from django.forms import HiddenInput
 from django.shortcuts import HttpResponse, render, redirect, reverse
-from django.views.generic import DeleteView, FormView, TemplateView
+from django.views.generic import FormView, TemplateView
+from django.db.models import Prefetch
 
 from app import forms, models
 
@@ -22,7 +24,8 @@ class TaskCountTodayHTMXView(HTMXTemplateMixin, TemplateView):
     def get_context_data(self, **kwargs):
         return {
             "completed": models.Todo.objects.completed_today().count(),
-            "created": models.Todo.objects.created_today().count()}
+            "created": models.Todo.objects.created_today().count()
+        }
 
 
 # TODO: add HTMX handling to this class
@@ -106,6 +109,21 @@ def htmx_complete_todo(request, todo_id):
 class TaskRetrieveHTMXView(HTMXTemplateMixin, TemplateView):
     def get_context_data(self, **kwargs):
         return {"todo": models.Todo.objects.get(id=self.kwargs["todo_id"])}
+
+
+class TaskCategoryListHTMXView(HTMXTemplateMixin, TemplateView):
+    def get_context_data(self, **kwargs):
+        return {"new_categories": models.TodoCategory.objects.filter(
+                deactivate_time__isnull=True
+            ).prefetch_related(
+                Prefetch(
+                    "todos",
+                    queryset=models.Todo.objects.filter(
+                        complete_time__isnull=True, category__isnull=False
+                    ),
+                )
+            )
+        }
 
 
 class TaskCategoryRetrieveHTMXView(HTMXTemplateMixin, TemplateView):

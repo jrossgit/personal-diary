@@ -27,24 +27,3 @@
     </div>
 </div>
 {% endblock page %}
-
-{% comment %}
-<div class="card mb-3 border-primary rounded-0 border-3">
-    <div class="card-body bg-primary text-white">
-        <h4 class="card-title">Miscellaneous Tasks</h4>
-    </div>
-        <ul class="list-group list-group-flush">
-        {% for todo in unsorted_todos %}
-            {% include "components/todos/card_todo.html" with todo=todo %}
-        {% endfor %}
-
-            <li class="list-group-item">
-                <button
-                hx-get="{% url 'htmx-todo-card-form' %}"
-                hx-trigger="click"
-                hx-target="closest li"
-                hx-swap="beforebegin"
-                type="button" class="btn btn-dark">+</button>
-            </li>
-        </ul>
-</div> {% endcomment %}

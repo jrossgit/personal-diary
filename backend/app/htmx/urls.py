@@ -49,6 +49,11 @@ urlpatterns = [
         name="htmx-todo-category",
     ),
     path(
+        "todocategory",
+        views.TaskCategoryListHTMXView.as_view(),
+        name="htmx-todo-category-list",
+    ),
+    path(
         "todocategory/<uuid:todo_category_id>:card_form",
         views.TaskCategoryCreateFormHTMXView.as_view(),
         name="htmx-todo-category-form",

@@ -1,19 +1,39 @@
 {% extends "base.html" %}
 
 {% block content %}
-<div class="content">
-<h1>To Do
-    {% include "components/todos/completed_today_counter.html" with created=number_todos_created completed=number_todos_today  %}
-</h1>
+<div class="col-4 content-sidebar">
+    <ul>
+        <li><h2
+            hx-get="{% url 'htmx-todo-category-list' %}?component=todo_card/todo_card_list"
+            hx-target="#todo-list"
+            hx-swap="outerHTML">
+            Show All
+        </h2></li>
+    {% for category in new_categories %}
+        <li><h2
+            hx-get="{% url 'htmx-todo-category' todo_category_id=category.id %}?component=todo_card/todo_card"
+            hx-target="#todo-list"
+            hx-swap="innerHTML">
+            {{ category.name }}
+        </h2></li>
+    {% endfor %}
+    </ul>
+</div>
+<div class="col-8 content-main">
+    <h1>To Do
+        {% include "components/todos/completed_today_counter.html" with created=number_todos_created completed=number_todos_today  %}
+    </h1>
 
-<b></b>
+    <b></b>
 
-<a class="btn btn-primary mb-3 rounded-0" href="{% url 'todo-category-create' %}" role="button">New Category</a>
+    <a class="btn btn-primary mb-3 rounded-0" href="{% url 'todo-category-create' %}" role="button">New Category</a>
 
-{% for category in new_categories %}
+    <div id="todo-list">
+    {% for category in new_categories %}
 
-    {% include "components/todo_card/todo_card.html" with category=category %}
+        {% include "components/todo_card/todo_card.html" with category=category %}
 
-{% endfor %}
+    {% endfor %}
+    </div>
 </div>
 {% endblock %}
