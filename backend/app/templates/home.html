@@ -2,22 +2,22 @@
 
 {% block content %}
 <div class="col-4 content-sidebar">
-    <ul>
-        <li><h2
+    <table>
+        <tr><td><a
             hx-get="{% url 'htmx-todo-category-list' %}?component=todo_card/todo_card_list"
             hx-target="#todo-list"
             hx-swap="outerHTML">
-            Show All
-        </h2></li>
+            <h2>Show All</h2></a>
+        </td></tr>
     {% for category in new_categories %}
-        <li><h2
+        <tr><td><a
             hx-get="{% url 'htmx-todo-category' todo_category_id=category.id %}?component=todo_card/todo_card"
             hx-target="#todo-list"
             hx-swap="innerHTML">
-            {{ category.name }}
-        </h2></li>
+            <h2>{{ category.name }}</h2>
+        </a></td></tr>
     {% endfor %}
-    </ul>
+    </table>
 </div>
 <div class="col-8 content-main">
     <h1>To Do
