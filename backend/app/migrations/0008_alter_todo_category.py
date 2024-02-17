@@ -18,7 +18,9 @@ class Migration(migrations.Migration):
     ]
 
     operations = [
-        migrations.RunPython(create_misc_category, reverse_code=migrations.RunPython.noop),
+        migrations.RunPython(
+            create_misc_category, reverse_code=migrations.RunPython.noop
+        ),
         migrations.AlterField(
             model_name="todo",
             name="category",

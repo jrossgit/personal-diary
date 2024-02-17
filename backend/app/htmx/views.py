@@ -12,8 +12,8 @@ from app import forms, models
 
 
 class HTMXTemplateMixin:
-    """
-    """
+    """ """
+
     def get_template_names(self):
         if "component" not in self.request.GET:
             raise NotImplementedError("HTMX call should define a component to return")
@@ -24,7 +24,7 @@ class TaskCountTodayHTMXView(HTMXTemplateMixin, TemplateView):
     def get_context_data(self, **kwargs):
         return {
             "completed": models.Todo.objects.completed_today().count(),
-            "created": models.Todo.objects.created_today().count()
+            "created": models.Todo.objects.created_today().count(),
         }
 
 
@@ -113,7 +113,8 @@ class TaskRetrieveHTMXView(HTMXTemplateMixin, TemplateView):
 
 class TaskCategoryListHTMXView(HTMXTemplateMixin, TemplateView):
     def get_context_data(self, **kwargs):
-        return {"new_categories": models.TodoCategory.objects.filter(
+        return {
+            "new_categories": models.TodoCategory.objects.filter(
                 deactivate_time__isnull=True
             ).prefetch_related(
                 Prefetch(
@@ -129,9 +130,14 @@ class TaskCategoryListHTMXView(HTMXTemplateMixin, TemplateView):
 class TaskCategoryRetrieveHTMXView(HTMXTemplateMixin, TemplateView):
     def get_context_data(self, **kwargs):
         return {
-            "category": models.TodoCategory.objects.get(
-                id=self.kwargs["todo_category_id"]
-            )
+            "category": models.TodoCategory.objects.prefetch_related(
+                Prefetch(
+                    "todos",
+                    queryset=models.Todo.objects.filter(
+                        complete_time__isnull=True, category__isnull=False
+                    ),
+                )
+            ).get(id=self.kwargs["todo_category_id"])
         }
 
 

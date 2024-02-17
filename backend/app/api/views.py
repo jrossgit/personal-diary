@@ -8,9 +8,9 @@ from app import models
 def list_todo_categories(request):
     if request.method == "GET":
         categories = models.TodoCategory.objects.filter(deactivate_time__isnull=True)
-    return Response({"todo_categories": [
-        {"id": c.id, "name": c.name} for c in categories
-    ]})
+    return Response(
+        {"todo_categories": [{"id": c.id, "name": c.name} for c in categories]}
+    )
 
 
 @api_view(http_method_names=["POST"])

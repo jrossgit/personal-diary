@@ -20,7 +20,6 @@ from django.urls import include, path
 
 
 urlpatterns = [
-
     path("accounts/", include("django.contrib.auth.urls")),
     path("logout", views.logout_view, name="log-out"),
     path("", views.home_view, name="home"),
@@ -33,8 +32,16 @@ urlpatterns = [
 
 urlpatterns.extend(
     [
-        path("api/categories", api_views.list_todo_categories, name="list-todo-categories"),
-        path("api/categories/<uuid:category_id>/todos", api_views.create_todo, name="create-todo"),
+        path(
+            "api/categories",
+            api_views.list_todo_categories,
+            name="list-todo-categories",
+        ),
+        path(
+            "api/categories/<uuid:category_id>/todos",
+            api_views.create_todo,
+            name="create-todo",
+        ),
     ]
 )
 
