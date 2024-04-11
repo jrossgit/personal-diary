@@ -32,7 +32,7 @@ BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 SECRET_KEY = os.environ.get("SECRET_KEY", "test_secret")
 
 # SECURITY WARNING: don't run with debug turned on in production!
-DEBUG = bool(os.environ.get("DEBUG")) or False
+DEBUG = True
 
 ALLOWED_HOSTS = os.environ.get("ALLOWED_HOSTS", "127.0.0.1").split(",")
 
@@ -43,7 +43,6 @@ INTERNAL_IPS = ["127.0.0.1"]
 
 INSTALLED_APPS = [
     "app",
-    "debug_toolbar",
     "django_bootstrap5",
     "django.contrib.admin",
     "django.contrib.auth",
@@ -58,7 +57,6 @@ MIDDLEWARE = [
     "django.contrib.sessions.middleware.SessionMiddleware",
     "django.middleware.common.CommonMiddleware",
     "django.middleware.csrf.CsrfViewMiddleware",
-    "debug_toolbar.middleware.DebugToolbarMiddleware",
     "django.contrib.auth.middleware.AuthenticationMiddleware",
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",

@@ -16,6 +16,7 @@ Including another URLconf
 from app import views
 from app.api import views as api_views
 
+from django.contrib import admin
 from django.urls import include, path
 
 
@@ -27,6 +28,7 @@ urlpatterns = [
     path("todocategory/<uuid:category_id>/todo", views.create_todo, name="todo-create"),
     path("todocategory", views.create_todo_category, name="todo-category-create"),
     path("diary", views.create_update_diary_entry, name="diary-create-update"),
+    path("admin/", admin.site.urls),
     path("__debug__/", include("debug_toolbar.urls")),
 ]
 
