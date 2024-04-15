@@ -10,15 +10,7 @@ services:
     ports:
       - 9292:8000
     volumes:
-      - "sqlite_data:/app/data"
+      - ./sqlite_data:/app/data
     environment:
-      - ALLOWED_HOSTS=localhost,0.0.0.0
-      - DEBUG=1
       - SECRET_KEY=foo
-      - DJANGO_ALLOWED_HOSTS=localhost,127.0.0.1
-      - SQL_DATABASE=/app/data/${SQL_DATABASE}
-      - SQL_USER=${SQL_USER}
-      - SQL_PASSWORD=${SQL_PASSWORD}
-
-volumes:
-  sqlite_data:
+      - SQL_DATABASE=/app/data/diary.db
