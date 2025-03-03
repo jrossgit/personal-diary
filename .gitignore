@@ -1,0 +1,19 @@
+*.pyc
+.idea
+.vscode
+.venv
+__pycache__
+.DS_Store
+
+# Settings
+.env
+.env.local
+.env.production
+
+# Local testing
+*.db
+backend/static
+nginx/static
+
+# Deployment stuff
+deploy/inventory.ini
