@@ -1,4 +1,3 @@
-
 import datetime
 from uuid import uuid4
 
@@ -21,7 +20,9 @@ class TodoCategory(Base):
     create_time: Mapped[datetime.datetime] = mapped_column(DateTime, default=func.now())
     deactivate_time: Mapped[datetime.datetime] = mapped_column(DateTime, nullable=True)
 
-    todos: Mapped[list["Todo"]] = relationship(back_populates="category", cascade="all, delete-orphan")
+    todos: Mapped[list["Todo"]] = relationship(
+        back_populates="category", cascade="all, delete-orphan"
+    )
 
 
 class Todo(Base):
@@ -46,7 +47,9 @@ class DiaryEntry(Base):
     __tablename__ = "app_diaryentry"
     category_id: Mapped[str] = mapped_column(ForeignKey("app_todocategory.id"))
 
-    id: Mapped[str] = mapped_column(CHAR(length=256), primary_key=True, default=generate_uuid)
+    id: Mapped[str] = mapped_column(
+        CHAR(length=256), primary_key=True, default=generate_uuid
+    )
     text: Mapped[str] = mapped_column(Text)
     date: Mapped[datetime.date] = mapped_column(Date)
 

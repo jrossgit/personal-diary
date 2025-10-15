@@ -3,6 +3,7 @@ from fastapi import Depends
 from sqlalchemy import create_engine
 from sqlalchemy.orm import sessionmaker, Session
 
+
 def get_db():
     """
     Dependancy function to provide the database session class

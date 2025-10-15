@@ -4,7 +4,15 @@ import logging
 from fastapi import BackgroundTasks, FastAPI
 from pydantic import BaseModel
 
-from diary_api.db import db_complete_todo, db_create_todo, db_delete_category_todos, db_delete_todo, db_get_categories, db_get_category_todos, db_get_todos
+from diary_api.db import (
+    db_complete_todo,
+    db_create_todo,
+    db_delete_category_todos,
+    db_delete_todo,
+    db_get_categories,
+    db_get_category_todos,
+    db_get_todos,
+)
 from diary_api.deps.db import DBSession
 
 app = FastAPI()
@@ -32,7 +40,9 @@ class CategoryDetailRead(CategoryListRead):
 
 
 @app.get("/categories")
-def route_get_categories(db: DBSession, background_tasks: BackgroundTasks) -> list[CategoryListRead]:
+def route_get_categories(
+    db: DBSession, background_tasks: BackgroundTasks
+) -> list[CategoryListRead]:
     return db_get_categories(db)
 
 
