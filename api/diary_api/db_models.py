@@ -23,6 +23,10 @@ class TodoCategory(Base):
     todos: Mapped[list["Todo"]] = relationship(
         back_populates="category", cascade="all, delete-orphan"
     )
+    # TODO: Remove?
+    diary_entries: Mapped[list["DiaryEntry"]] = relationship(
+        back_populates="category", cascade="all, delete-orphan"
+    )
 
 
 class Todo(Base):
@@ -53,7 +57,7 @@ class DiaryEntry(Base):
     text: Mapped[str] = mapped_column(Text)
     date: Mapped[datetime.date] = mapped_column(Date)
 
-    category: Mapped[TodoCategory] = relationship(back_populates="todos")
+    category: Mapped[TodoCategory] = relationship(back_populates="diary_entries")
 
     __table_args__ = (
         Index(
