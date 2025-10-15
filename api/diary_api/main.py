@@ -1,13 +1,14 @@
 import datetime
-from typing import Optional, Union
+import logging
 
-from fastapi import FastAPI
+from fastapi import BackgroundTasks, FastAPI
 from pydantic import BaseModel
 
 from diary_api.db import db_complete_todo, db_create_todo, db_delete_category_todos, db_delete_todo, db_get_categories, db_get_category_todos, db_get_todos
 from diary_api.deps.db import DBSession
 
 app = FastAPI()
+LOGGER = logging.getLogger(__name__)
 
 
 class TodoWrite(BaseModel):
@@ -31,7 +32,7 @@ class CategoryDetailRead(CategoryListRead):
 
 
 @app.get("/categories")
-def route_get_categories(db: DBSession) -> list[CategoryListRead]:
+def route_get_categories(db: DBSession, background_tasks: BackgroundTasks) -> list[CategoryListRead]:
     return db_get_categories(db)
 
 
@@ -63,6 +64,3 @@ def route_todo_complete(db: DBSession, todo_id: str) -> None:
 @app.delete("/todos/{id}")
 def route_delete_todo(db: DBSession, id: str) -> None:
     db_delete_todo(db, id)
-
-
-
