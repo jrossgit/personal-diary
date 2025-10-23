@@ -1,8 +1,8 @@
 import pytest
 
-from tests.factories import TodoCategoryFactory
+from tests.factories import CompleteTodoFactory, TodoCategoryFactory, TodoFactory
 from tests.setup import create_all, drop_all, test_db
-from diary_api.db import db_get_categories
+from diary_api.db import db_get_categories, db_get_category_todos, db_get_todos
 
 
 @pytest.fixture(autouse=True)
@@ -13,6 +13,12 @@ def run_around_tests():
     drop_all()
 
 
+def _assert_id_retrieve_order(source, test_target, desired_order):
+    print([item.id for item in source])
+    required_ids = [source[i].id for i in desired_order]
+    assert [item.id for item in test_target] == required_ids
+
+
 def test_get_categories_gets_all_categories():
     category = TodoCategoryFactory()
 
@@ -20,3 +26,74 @@ def test_get_categories_gets_all_categories():
 
     assert len(categories_db) == 1
     assert categories_db[0].id == category.id
+
+
+def test_get_category_todos_gets_all_todos_in_category():
+    c1, _, c2 = [
+        TodoCategoryFactory(name="Cat 1"),
+        TodoCategoryFactory(name="Empty Category"),
+        TodoCategoryFactory(name="Cat 2"),
+    ]
+    todos = [
+        TodoFactory(category=c1),
+        TodoFactory(category=c2),
+        CompleteTodoFactory(category=c2),
+    ]
+
+    _assert_id_retrieve_order(
+        todos, list(db_get_category_todos(test_db, c1.id, active_only=False)), [0]
+    )
+    _assert_id_retrieve_order(
+        todos, list(db_get_category_todos(test_db, c2.id, active_only=False)), [1, 2]
+    )
+    _assert_id_retrieve_order(
+        todos, list(db_get_category_todos(test_db, c2.id, active_only=True)), [1]
+    )
+
+
+def test_db_get_todos_gets_all_complete_todos_filters_by_active():
+    c1, _, c2 = [
+        TodoCategoryFactory(name="Cat 1"),
+        TodoCategoryFactory(name="Empty Category"),
+        TodoCategoryFactory(name="Cat 2"),
+    ]
+    _ = [
+        TodoFactory(category=c1),
+        TodoFactory(category=c2),
+        CompleteTodoFactory(category=c2),
+    ]
+
+    db_todos = db_get_todos(test_db)
+    assert len(db_todos) == 2
+
+
+def test_db_get_todos_gets_all_complete_todos_accepts_non_active_todos_when_requested():
+    c1, _, c2 = [
+        TodoCategoryFactory(name="Cat 1"),
+        TodoCategoryFactory(name="Empty Category"),
+        TodoCategoryFactory(name="Cat 2"),
+    ]
+    _ = [
+        TodoFactory(category=c1),
+        TodoFactory(category=c2),
+        CompleteTodoFactory(category=c2),
+    ]
+
+    db_todos = db_get_todos(test_db, active_only=False)
+    assert len(db_todos) == 3
+
+
+def test_db_get_todos_orders_by_timestamp():
+    c1, _, c2 = [
+        TodoCategoryFactory(name="Cat 1"),
+        TodoCategoryFactory(name="Empty Category"),
+        TodoCategoryFactory(name="Cat 2"),
+    ]
+    _ = [
+        TodoFactory(category=c1),
+        TodoFactory(category=c2),
+        CompleteTodoFactory(category=c2),
+    ]
+
+    db_todos = db_get_todos(test_db)
+    assert db_todos[1].create_time >= db_todos[0].create_time

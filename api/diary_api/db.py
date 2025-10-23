@@ -8,20 +8,22 @@ def db_get_categories(db: Session):
     return db.query(TodoCategory).filter(TodoCategory.deactivate_time is not None).all()
 
 
-def db_get_category_todos(db: Session, category_id: str):
-    return (
+def db_get_category_todos(db: Session, category_id: str, active_only=True):
+    query = (
         db.query(Todo)
-        .filter(Todo.complete_time is not None, Todo.category_id == category_id)
+        .filter(Todo.category_id == category_id)
         .order_by(Todo.create_time.asc())
     )
+    if active_only:
+        query = query.filter(Todo.complete_time == None)  # noqa: E711
+    return query.all()
 
 
-def db_get_todos(db: Session):
-    return (
-        db.query(Todo)
-        .filter(Todo.complete_time is not None)
-        .order_by(Todo.create_time.asc())
-    )
+def db_get_todos(db: Session, active_only=True):
+    query = db.query(Todo).order_by(Todo.create_time.asc())
+    if active_only:
+        query = query.filter(Todo.complete_time == None)  # noqa: E711
+    return query.all()
 
 
 def db_delete_category_todos(db: Session, id: str):
