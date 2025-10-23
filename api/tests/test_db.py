@@ -1,8 +1,15 @@
 import pytest
 
+from diary_api.db_models import TodoCategory
 from tests.factories import CompleteTodoFactory, TodoCategoryFactory, TodoFactory
 from tests.setup import create_all, drop_all, test_db
-from diary_api.db import db_get_categories, db_get_category_todos, db_get_todos
+from diary_api.db import (
+    db_create_todo,
+    db_delete_category_todos,
+    db_get_categories,
+    db_get_category_todos,
+    db_get_todos,
+)
 
 
 @pytest.fixture(autouse=True)
@@ -97,3 +104,30 @@ def test_db_get_todos_orders_by_timestamp():
 
     db_todos = db_get_todos(test_db)
     assert db_todos[1].create_time >= db_todos[0].create_time
+
+
+def test_delete_category_deletes_category():
+    c1, c2 = [
+        TodoCategoryFactory(name="Cat 1"),
+        TodoCategoryFactory(name="Cat 2"),
+    ]
+
+    db_delete_category_todos(test_db, c1.id)
+    current_todo = test_db.query(TodoCategory).one()
+    assert current_todo.id == c2.id
+
+    db_delete_category_todos(test_db, c2.id)
+    assert not test_db.query(TodoCategory).count()
+
+
+def test_create_todo():
+    cat = TodoCategoryFactory()
+
+    todo = db_create_todo(test_db, cat.id, "Do the thing!")
+    assert todo.create_time
+    assert not todo.complete_time
+    assert todo.text == "Do the thing!"
+    assert todo.category_id == cat.id
+
+
+# TODO!
