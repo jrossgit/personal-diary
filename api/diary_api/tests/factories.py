@@ -1,7 +1,7 @@
 import datetime
 import factory
 from diary_api import db_models
-from tests.setup import test_db
+from diary_api.tests.setup import test_db
 # from diary_api.deps.db import get_db
 
 

@@ -1,8 +1,12 @@
 import pytest
 
 from diary_api.db_models import TodoCategory
-from tests.factories import CompleteTodoFactory, TodoCategoryFactory, TodoFactory
-from tests.setup import create_all, drop_all, test_db
+from diary_api.tests.factories import (
+    CompleteTodoFactory,
+    TodoCategoryFactory,
+    TodoFactory,
+)
+from diary_api.tests.setup import create_all, drop_all, test_db
 from diary_api.db import (
     db_create_todo,
     db_delete_category_todos,
