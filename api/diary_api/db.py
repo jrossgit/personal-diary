@@ -41,8 +41,9 @@ def db_create_todo(db: Session, category_id: str, text: str):
 
 def db_complete_todo(db: Session, id: str):
     todo = db.query(Todo).filter_by(id=id).one()
-    todo.complete_time = datetime.datetime.now()
-    db.commit()
+    if not todo.complete_time:
+        todo.complete_time = datetime.datetime.now()
+        db.commit()
     return todo
 
 

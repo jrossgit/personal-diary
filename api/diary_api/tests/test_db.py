@@ -1,6 +1,7 @@
+from datetime import datetime, timedelta
 import pytest
 
-from diary_api.db_models import TodoCategory
+from diary_api.db_models import Todo, TodoCategory
 from diary_api.tests.factories import (
     CompleteTodoFactory,
     TodoCategoryFactory,
@@ -8,8 +9,10 @@ from diary_api.tests.factories import (
 )
 from diary_api.tests.setup import create_all, drop_all, test_db
 from diary_api.db import (
+    db_complete_todo,
     db_create_todo,
     db_delete_category_todos,
+    db_delete_todo,
     db_get_categories,
     db_get_category_todos,
     db_get_todos,
@@ -134,4 +137,24 @@ def test_create_todo():
     assert todo.category_id == cat.id
 
 
-# TODO!
+def test_complete_todo_fills_in_complete_time_as_now():
+    todo = TodoFactory()
+
+    db_complete_todo(test_db, todo.id)
+    assert todo.complete_time
+    assert datetime.now() - todo.complete_time < timedelta(seconds=1)
+
+
+def test_complete_todo_does_nothing_if_already_complete():
+    todo = CompleteTodoFactory()
+    complete_time = todo.complete_time
+
+    db_complete_todo(test_db, todo.id)
+    assert todo.complete_time
+    assert todo.complete_time == complete_time
+
+
+def test_delete_todo():
+    todo = TodoFactory()
+    db_delete_todo(test_db, todo.id)
+    assert len(test_db.query(Todo).all()) == 0

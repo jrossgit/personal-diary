@@ -21,7 +21,7 @@ class TodoFactory(factory.alchemy.SQLAlchemyModelFactory):
         sqlalchemy_session_persistence = "commit"
 
     text = "Test Todo"
-    category = TodoCategoryFactory
+    category = factory.SubFactory(TodoCategoryFactory)
 
 
 class CompleteTodoFactory(TodoFactory):
@@ -31,5 +31,5 @@ class CompleteTodoFactory(TodoFactory):
         sqlalchemy_session_persistence = "commit"
 
     text = "Test Todo"
-    category = TodoCategoryFactory
+    category = factory.SubFactory(TodoCategoryFactory)
     complete_time = datetime.datetime.now()
