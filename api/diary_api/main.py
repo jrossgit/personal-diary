@@ -2,6 +2,7 @@ import datetime
 import logging
 
 from fastapi import BackgroundTasks, FastAPI
+from fastapi.middleware.cors import CORSMiddleware
 from pydantic import BaseModel
 
 from diary_api.db import (
@@ -15,7 +16,25 @@ from diary_api.db import (
 )
 from diary_api.deps.db import DBSession
 
+
+
+origins = [
+    "http://127.0.0.1:8000",
+    "http://127.0.0.1:8080",
+]
+
+
+
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=origins,
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 LOGGER = logging.getLogger(__name__)
 
 
