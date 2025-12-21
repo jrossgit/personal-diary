@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import type { ICategory, ICategorySummary, ITodo } from './utils/interfaces'
-import { completeTodo, deleteTodo, getCategories, getCategoryDetail } from './utils/http'
+import { completeTodo, createTodo, deleteTodo, getCategories, getCategoryDetail } from './utils/http'
 
 // TODOs
 // Install typescript stubs as used in Hub
@@ -19,6 +19,30 @@ function Todo({ todo, onComplete, onDelete }: ITodoProps) {
     <button onClick={(_) => {onComplete()}}>✔</button>
     <button onClick={(_) => {onDelete()}}>🗑</button>
   </li>
+}
+
+interface IInputTodoProps {
+  onCreate: Function;
+}
+function InputTodo({ onCreate }: IInputTodoProps) {
+
+  const [inputVisible, setInputVisible] = useState(false);
+  const [text, setText] = useState("");
+
+  function showInput() { setInputVisible(true); }
+
+  return <>
+    {
+      inputVisible ? <>
+        <input id="text" onChange={e => setText(e.target.value)}></input>
+        <button onClick={(_) => {onCreate(text);}}>
+          Submit
+        </button>
+      </>
+      :
+      <button onClick={showInput}><strong>+</strong></button>
+    }
+  </>
 }
 
 
@@ -39,6 +63,14 @@ function CategoryCard({ category }: ICategoryCardProps ) {
       }
     }, [category])
 
+  function onDoCreate(text: string) {
+    const categoryId = category.id;
+
+    createTodo(categoryId, text).then(
+      (resp) => setTodos([...todos, resp])
+    );
+  }
+
   function onComplete(todoId: string) {
     completeTodo(todoId).then(
       (resp) => setTodos(todos.filter(t => t.id !== todoId))
@@ -54,17 +86,17 @@ function CategoryCard({ category }: ICategoryCardProps ) {
   return (
   <>
     {
-      category ? <>
+      category ?
+      <>
         <h2>{category.name}</h2>
-        {todos.length ? 
         <ul>
           {todos.map(todo => <Todo
             todo={todo}
             onComplete={() => onComplete(todo.id)}
             onDelete={() => onDelete(todo.id)}
           />)}
+          <InputTodo onCreate={onDoCreate}/>
         </ul>
-        : <p>Nothing to do!</p>}
       </>
       :
       <h2>Select a category</h2>
