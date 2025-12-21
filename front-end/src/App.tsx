@@ -1,7 +1,7 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import type { ICategory, ICategorySummary, ITodo } from './utils/interfaces'
-import { completeTodo, getCategories, getCategoryDetail } from './utils/http'
+import { completeTodo, deleteTodo, getCategories, getCategoryDetail } from './utils/http'
 
 // TODOs
 // Install typescript stubs as used in Hub
@@ -10,13 +10,14 @@ import { completeTodo, getCategories, getCategoryDetail } from './utils/http'
 interface ITodoProps {
   todo: ITodo;  // TODO control via text
   onComplete: Function; // TODO more detailed type
+  onDelete: Function;
 }
 
-function Todo({ todo, onComplete }: ITodoProps) {
+function Todo({ todo, onComplete, onDelete }: ITodoProps) {
   return <li>
     {todo.text}
     <button onClick={(_) => {onComplete()}}>✔</button>
-    <button>🗑</button>
+    <button onClick={(_) => {onDelete()}}>🗑</button>
   </li>
 }
 
@@ -44,6 +45,12 @@ function CategoryCard({ category }: ICategoryCardProps ) {
     );
   }
 
+  function onDelete(todoId: string) {
+    deleteTodo(todoId).then(
+      (resp) => setTodos(todos.filter(t => t.id !== todoId))
+    );
+  }
+
   return (
   <>
     {
@@ -51,7 +58,11 @@ function CategoryCard({ category }: ICategoryCardProps ) {
         <h2>{category.name}</h2>
         {todos.length ? 
         <ul>
-          {todos.map(todo => <Todo todo={todo} onComplete={() => onComplete(todo.id)}/>)}
+          {todos.map(todo => <Todo
+            todo={todo}
+            onComplete={() => onComplete(todo.id)}
+            onDelete={() => onDelete(todo.id)}
+          />)}
         </ul>
         : <p>Nothing to do!</p>}
       </>

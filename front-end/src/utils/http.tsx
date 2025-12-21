@@ -34,6 +34,19 @@ export const completeTodo = (todoId: string) => {
 }
 
 
+export const deleteTodo = (todoId: string) => {
+    return fetch(`${API_BASE}/todos/${todoId}`,
+    {
+        method: "DELETE",
+    })
+    .then(
+        (response) => response.json())
+    .catch
+    ((err) => {
+        console.log(err.message);
+    })
+}
+
 
 // export const getContestDetail = (slug: string): Promise<IContest> => {
 //     return fetch(`${API_BASE}/contests/${slug}`)
