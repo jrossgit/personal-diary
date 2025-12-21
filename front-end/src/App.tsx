@@ -1,20 +1,21 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import type { ICategory, ICategorySummary, ITodo } from './utils/interfaces'
-import { getCategories, getCategoryDetail } from './utils/http'
+import { completeTodo, getCategories, getCategoryDetail } from './utils/http'
 
 // TODOs
 // Install typescript stubs as used in Hub
+// Request in progress indicator
 
 interface ITodoProps {
-  todo: ITodo;
+  todo: ITodo;  // TODO control via text
+  onComplete: Function; // TODO more detailed type
 }
 
-function Todo({ todo }: ITodoProps) {
-
+function Todo({ todo, onComplete }: ITodoProps) {
   return <li>
     {todo.text}
-    <button>✔</button>
+    <button onClick={(_) => {onComplete()}}>✔</button>
     <button>🗑</button>
   </li>
 }
@@ -37,6 +38,12 @@ function CategoryCard({ category }: ICategoryCardProps ) {
       }
     }, [category])
 
+  function onComplete(todoId: string) {
+    completeTodo(todoId).then(
+      (resp) => setTodos(todos.filter(t => t.id !== todoId))
+    );
+  }
+
   return (
   <>
     {
@@ -44,7 +51,7 @@ function CategoryCard({ category }: ICategoryCardProps ) {
         <h2>{category.name}</h2>
         {todos.length ? 
         <ul>
-          {todos.map(todo => <Todo todo={todo}/>)}
+          {todos.map(todo => <Todo todo={todo} onComplete={() => onComplete(todo.id)}/>)}
         </ul>
         : <p>Nothing to do!</p>}
       </>

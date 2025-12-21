@@ -20,6 +20,21 @@ export const getCategoryDetail = (categoryId: string): Promise<ITodo[]> => {
     })
 }
 
+
+export const completeTodo = (todoId: string) => {
+    return fetch(`${API_BASE}/todos/${todoId}:complete`,
+    {
+        method: "POST",
+    })
+    .then(
+        (response) => response.json())
+    .catch((err) => {
+        console.log(err.message);
+    })
+}
+
+
+
 // export const getContestDetail = (slug: string): Promise<IContest> => {
 //     return fetch(`${API_BASE}/contests/${slug}`)
 //     .then((response) => response.json())
@@ -32,26 +47,6 @@ export const getCategoryDetail = (categoryId: string): Promise<ITodo[]> => {
 // export const getRungList = (slug: string) => {
 //     return fetch(`${API_BASE}/contests/${slug}/rungs`)
 //     .then((response) => response.json())
-//     .catch((err) => {
-//         console.log(err.message);
-//     })
-// }
-
-
-// export const postImages = (slug: string, rungNumber: number, submittedImages: number[]) => {
-//     return fetch(`${API_BASE}/contests/${slug}/rungs/${rungNumber}/submit/`,
-//     {
-//         method: "POST",
-//         headers: {
-//             "Accept": "application/json",
-//             "Content-Type": "application/json",
-//         },
-//         body: JSON.stringify({
-//             images: submittedImages
-//         })
-//     })
-//     .then(
-//         (response) => response.json())
 //     .catch((err) => {
 //         console.log(err.message);
 //     })
