@@ -7,6 +7,7 @@ from pydantic import BaseModel
 
 from diary_api.db import (
     db_complete_todo,
+    db_create_category,
     db_create_todo,
     db_delete_category_todos,
     db_delete_todo,
@@ -17,10 +18,9 @@ from diary_api.db import (
 from diary_api.deps.db import DBSession
 
 
-
 origins = [
-    "http://127.0.0.1:8000",
-    "http://127.0.0.1:8080",
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
 ]
 
 
@@ -48,9 +48,12 @@ class TodoRead(TodoWrite):
     create_time: datetime.datetime
 
 
-class CategoryListRead(BaseModel):
-    id: str
+class CategoryWrite(BaseModel):
     name: str
+
+
+class CategoryListRead(CategoryWrite):
+    id: str
     create_time: datetime.datetime
 
 
@@ -60,9 +63,17 @@ class CategoryDetailRead(CategoryListRead):
 
 @app.get("/categories")
 def route_get_categories(
-    db: DBSession, background_tasks: BackgroundTasks
+    db: DBSession
 ) -> list[CategoryListRead]:
     return db_get_categories(db)
+
+
+@app.post("/categories")
+def route_create_category(
+    db: DBSession,
+    category_in: CategoryWrite,
+) -> CategoryDetailRead:
+    return db_create_category(db, category_in.name)
 
 
 @app.get("/categories/{id}/todos")

@@ -1,11 +1,12 @@
 import { useEffect, useState } from 'react'
 import './App.css'
 import type { ICategory, ICategorySummary, ITodo } from './utils/interfaces'
-import { completeTodo, createTodo, deleteTodo, getCategories, getCategoryDetail } from './utils/http'
+import { completeTodo, createCategory, createTodo, deleteTodo, getCategories, getCategoryDetail } from './utils/http'
 
 // TODOs
 // Install typescript stubs as used in Hub
 // Request in progress indicator
+
 
 interface ITodoProps {
   todo: ITodo;  // TODO control via text
@@ -105,9 +106,26 @@ function CategoryCard({ category }: ICategoryCardProps ) {
   )
 }
 
+interface INewCategoryFormProps {
+  onCreate: Function;
+}
+function NewCategoryForm({ onCreate }: INewCategoryFormProps) {
+
+  const [text, setText] = useState("");
+
+  return <>
+    <h2>Create New Category</h2>
+    <input id="text" onChange={e => setText(e.target.value)}></input>
+    <button onClick={(_) => {onCreate(text);}}>
+      Submit
+    </button>
+  </>
+}
+
 
 function App() {
-  const [categories, setCategories] = useState<ICategorySummary[]>([])
+  const [categories, setCategories] = useState<ICategorySummary[]>([]);
+  const [newCategoryFormOpen, setNewCategoryFormOpen] = useState<boolean>(false)
   const [selectedCategory, setSelectedCategory] = useState<ICategorySummary | null>(null);
 
   useEffect(() => {
@@ -117,22 +135,37 @@ function App() {
           });
       }, [])
 
+  function onCreateCategory(text: string) {
+
+    createCategory(text).then(
+      (resp) => {
+        setCategories([resp, ...categories]);
+        setSelectedCategory(resp);
+        setNewCategoryFormOpen(false);
+      }
+    );
+  }
+
   return (
     <>
       <header>
-        Header
+        <h1>Diary</h1>
       </header>
         <nav className="left-nav">
           <ul>
+            <li onClick={(_) => {setNewCategoryFormOpen(true)}}><button><strong>+ </strong>New Category</button></li>
             {categories.map(
-              cat => <a onClick={(e) => {setSelectedCategory(cat);}}><li>{cat.name}</li></a>
+              cat => <a onClick={(e) => {setNewCategoryFormOpen(false); setSelectedCategory(cat);}}><li>{cat.name}</li></a>
             )}
           </ul>
         </nav>
         <main>
-          <CategoryCard category={selectedCategory}/>
+          {newCategoryFormOpen ?
+            <NewCategoryForm onCreate={onCreateCategory} />
+            :
+            <CategoryCard category={selectedCategory}/>
+          }
         </main>
-
     </>
   )
 }

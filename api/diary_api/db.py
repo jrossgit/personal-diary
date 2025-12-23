@@ -19,6 +19,13 @@ def db_get_category_todos(db: Session, category_id: str, active_only=True):
     return query.all()
 
 
+def db_create_category(db: Session, name: str):
+    category = TodoCategory(name=name)
+    db.add(category)
+    db.commit()
+    return category
+
+
 def db_get_todos(db: Session, active_only=True):
     query = db.query(Todo).order_by(Todo.create_time.asc())
     if active_only:

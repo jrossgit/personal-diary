@@ -3,6 +3,24 @@ import type { ICategory, ICategorySummary, ITodo } from "./interfaces";
 export const API_BASE = "http://localhost:8000";
 
 
+export const createCategory = (name: string) => {
+    return fetch(`${API_BASE}/categories`,
+    {
+        method: "POST",
+        body: JSON.stringify({name: name}),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+    })
+    .then(
+        (response) => response.json())
+    .catch((err) => {
+        console.log(err.message);
+    })
+}
+
+
 export const getCategories = (): Promise<ICategorySummary[]> => {
     return fetch(`${API_BASE}/categories`)
     .then((response) => response.json())

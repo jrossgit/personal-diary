@@ -10,6 +10,7 @@ from diary_api.tests.factories import (
 from diary_api.tests.setup import create_all, drop_all, test_db
 from diary_api.db import (
     db_complete_todo,
+    db_create_category,
     db_create_todo,
     db_delete_category_todos,
     db_delete_todo,
@@ -31,6 +32,14 @@ def _assert_id_retrieve_order(source, test_target, desired_order):
     print([item.id for item in source])
     required_ids = [source[i].id for i in desired_order]
     assert [item.id for item in test_target] == required_ids
+
+
+def test_create_category():
+
+    category = db_create_category(test_db, "Cool tasks")
+    assert category.id
+    assert category.create_time
+    assert category.name == "Cool tasks"
 
 
 def test_get_categories_gets_all_categories():
