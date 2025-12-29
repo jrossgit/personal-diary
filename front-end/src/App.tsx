@@ -104,6 +104,7 @@ function CategoryCard({ category }: ICategoryCardProps ) {
         <h2>{category.name}</h2>
         <ul>
           {todos.map(todo => <Todo
+            key={todo.id}
             todo={todo}
             onComplete={() => onComplete(todo.id)}
             onDelete={() => onDelete(todo.id)}
@@ -162,7 +163,7 @@ function App() {
           <ul>
             <li onClick={(_) => {setNewCategoryFormOpen(true)}}><button><strong>+ </strong>New Category</button></li>
             {categories.map(
-              cat => <a onClick={(e) => {setNewCategoryFormOpen(false); setSelectedCategory(cat);}}><li>{cat.name}</li></a>
+              cat => <li><a key={cat.id} onClick={(e) => {setNewCategoryFormOpen(false); setSelectedCategory(cat);}}>{cat.name}</a></li>
             )}
           </ul>
         </nav>
