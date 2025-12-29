@@ -161,9 +161,9 @@ function App() {
       </header>
         <nav className="left-nav">
           <ul>
-            <li onClick={(_) => {setNewCategoryFormOpen(true)}}><button><strong>+ </strong>New Category</button></li>
+            <li key="newcategory" onClick={(_) => {setNewCategoryFormOpen(true)}}><button><strong>+ </strong>New Category</button></li>
             {categories.map(
-              cat => <li><a key={cat.id} onClick={(e) => {setNewCategoryFormOpen(false); setSelectedCategory(cat);}}>{cat.name}</a></li>
+              cat => <li key={cat.id}><a onClick={(e) => {setNewCategoryFormOpen(false); setSelectedCategory(cat);}}>{cat.name}</a></li>
             )}
           </ul>
         </nav>
