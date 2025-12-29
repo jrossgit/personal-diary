@@ -34,6 +34,14 @@ main {
   height: 100%;
   width: 200px;
   position: fixed;
+  background-color: black;
+  border-right: solid 3px #dddddd 
+}
+
+.left-nav li {
+  list-style-type: none;
+  text-align: center;
+  padding-bottom: 0.25em;
 }
 
 .column {

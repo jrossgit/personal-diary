@@ -8,6 +8,24 @@ import { completeTodo, createCategory, createTodo, deleteTodo, getCategories, ge
 // Request in progress indicator
 
 
+interface IInputComponentProps {
+  onSubmit: Function; // TODO more detailed type
+  initialText?: string;
+}
+
+function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
+
+  const [text, setText] = useState(initialText);
+
+  return <>
+    <input id="text" onChange={e => setText(e.target.value)}></input>
+    <button onClick={(_) => {onSubmit(text);}}>
+      Submit
+    </button>
+  </>
+}
+
+
 interface ITodoProps {
   todo: ITodo;  // TODO control via text
   onComplete: Function; // TODO more detailed type
@@ -28,18 +46,12 @@ interface IInputTodoProps {
 function InputTodo({ onCreate }: IInputTodoProps) {
 
   const [inputVisible, setInputVisible] = useState(false);
-  const [text, setText] = useState("");
 
   function showInput() { setInputVisible(true); }
 
   return <>
     {
-      inputVisible ? <>
-        <input id="text" onChange={e => setText(e.target.value)}></input>
-        <button onClick={(_) => {onCreate(text);}}>
-          Submit
-        </button>
-      </>
+      inputVisible ? <InputComponent onSubmit={onCreate} />
       :
       <button onClick={showInput}><strong>+</strong></button>
     }
@@ -111,14 +123,9 @@ interface INewCategoryFormProps {
 }
 function NewCategoryForm({ onCreate }: INewCategoryFormProps) {
 
-  const [text, setText] = useState("");
-
   return <>
     <h2>Create New Category</h2>
-    <input id="text" onChange={e => setText(e.target.value)}></input>
-    <button onClick={(_) => {onCreate(text);}}>
-      Submit
-    </button>
+    <InputComponent onSubmit={onCreate} />
   </>
 }
 
