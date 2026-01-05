@@ -1,0 +1,30 @@
+version: '3.7'
+
+
+services:
+  web:
+    build:
+      context: ./backend
+      target: build
+    command: bash -c "python manage.py migrate && python manage.py collectstatic --noinput && uwsgi app/config/uwsgi.ini"
+    ports:
+      - ${UWSGI_PORT}:8000
+    volumes:
+      - "${DATA_DIR}:/app/data"
+      - "assets:/static"
+    environment:
+      - SECRET_KEY=${SECRET_KEY}
+      - STATIC_ROOT=/static
+      - SQL_DATABASE=/app/data/diary.db
+
+  nginx:
+    build: ./nginx
+    ports:
+      - ${HOST_PORT}:80
+    depends_on:
+      - web
+    volumes:
+      - "assets:/static"
+
+volumes:
+  assets:

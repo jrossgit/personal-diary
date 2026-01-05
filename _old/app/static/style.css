@@ -1,0 +1,61 @@
+@font-face {
+    font-family: 'Anton';
+    src: url('fonts/Anton-Regular.ttf') format('woff');
+}
+
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    overflow-y: scroll;
+}
+
+body {
+    font-family: "Arial", sans-serif;
+}
+
+a:hover {
+    cursor:pointer;
+}
+
+h1, h2, h3, h4, h5 {
+    font-family: 'Anton';
+}
+
+.content {
+    padding-top: 25px;
+}
+
+.content a {
+    color: black;
+}
+
+.content-body {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    max-width: 800px;
+}
+
+.bg-pink {
+    --bs-bg-opacity: 1;
+    background-color: hotpink;
+    color: white;
+}
+
+.icon-small {
+    width: 24px;
+    height: 24px;
+}
+
+.icon-fill {
+    width: 24px;
+    height: 24px;
+}
+
+.list-group-item {
+    padding: 5px 10px;
+}
