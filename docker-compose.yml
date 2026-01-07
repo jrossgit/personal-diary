@@ -16,3 +16,9 @@ services:
     environment:
       - SECRET_KEY=foo
       - SQL_DATABASE=sqlite:////app/data/diary.db
+
+  front-end:
+    build:
+      context: ./front-end
+    ports:
+      - 5173:5173
