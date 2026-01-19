@@ -1,3 +1,5 @@
+# Borrowed from https://github.com/orgs/python-poetry/discussions/1879
+
 ### Base Python install image
 FROM python:3.14-slim-bookworm as python-poetry-build-base
 
