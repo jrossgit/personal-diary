@@ -17,12 +17,16 @@ function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
 
   const [text, setText] = useState(initialText);
 
-  return <>
-    <input id="text" onChange={e => setText(e.target.value)}></input>
-    <button onClick={(_) => {onSubmit(text);}}>
+  function submit(formData: any) {
+      onSubmit(formData.get("text"));
+    }
+
+  return <form action={submit}>
+    <input name="text" onChange={e => setText(e.target.value)}></input>
+    <button type="submit">
       Submit
     </button>
-  </>
+  </form>
 }
 
 
