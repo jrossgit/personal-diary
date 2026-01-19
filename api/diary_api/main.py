@@ -18,6 +18,7 @@ from diary_api.db import (
 from diary_api.deps.db import DBSession
 
 
+# TODO: Move to settings dependency
 origins = [
     "http://localhost:5173",
     "http://127.0.0.1:5173",
