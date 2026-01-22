@@ -1,7 +1,8 @@
 import type { ICategory, ICategorySummary, ITodo } from "./interfaces";
 
-export const API_BASE = `http://${import.meta.env.VITE_API_HOSTNAME}:${import.meta.env.VITE_API_PORT}`; // "http://localhost:8000";
+export const API_BASE = `http://${import.meta.env.VITE_API_HOSTNAME}:${import.meta.env.VITE_API_PORT}`;
 
+// TODO - finer grained handling of bad responses on requests
 
 export const createCategory = (name: string) => {
     return fetch(`${API_BASE}/categories`,

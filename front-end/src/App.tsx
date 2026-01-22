@@ -19,7 +19,7 @@ function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
 
   function submit(formData: any) {
       onSubmit(formData.get("text"));
-    }
+  }
 
   return <form action={submit}>
     <input name="text" onChange={e => setText(e.target.value)}></input>
@@ -28,7 +28,6 @@ function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
     </button>
   </form>
 }
-
 
 interface ITodoProps {
   todo: ITodo;  // TODO control via text
@@ -113,7 +112,7 @@ function CategoryCard({ category }: ICategoryCardProps ) {
             onComplete={() => onComplete(todo.id)}
             onDelete={() => onDelete(todo.id)}
           />)}
-          <InputTodo onCreate={onDoCreate}/>
+          <InputTodo key={category.id} onCreate={onDoCreate}/>
         </ul>
       </>
       :
