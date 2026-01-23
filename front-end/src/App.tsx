@@ -29,24 +29,12 @@ function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
   </form>
 }
 
-interface ITodoProps {
-  todo: ITodo;  // TODO control via text
-  onComplete: Function; // TODO more detailed type
-  onDelete: Function;
-}
-
-function Todo({ todo, onComplete, onDelete }: ITodoProps) {
-  return <li>
-    {todo.text}
-    <button onClick={(_) => {onComplete()}}>✔</button>
-    <button onClick={(_) => {onDelete()}}>🗑</button>
-  </li>
-}
 
 interface IInputTodoProps {
-  onCreate: Function;
+  onSubmit: Function;
+  todo?: ITodo;
 }
-function InputTodo({ onCreate }: IInputTodoProps) {
+function InputTodo({ onSubmit, todo }: IInputTodoProps) {
 
   const [inputVisible, setInputVisible] = useState(false);
 
@@ -54,7 +42,7 @@ function InputTodo({ onCreate }: IInputTodoProps) {
 
   return <>
     {
-      inputVisible ? <InputComponent onSubmit={onCreate} />
+      inputVisible ? <InputComponent onSubmit={onSubmit} />
       :
       <button onClick={showInput}><strong>+</strong></button>
     }
@@ -62,10 +50,31 @@ function InputTodo({ onCreate }: IInputTodoProps) {
 }
 
 
+interface ITodoProps {
+  todo: ITodo;  // TODO control via text
+  onComplete: Function; // TODO more detailed type
+  onDelete: Function;
+  onUpdate?: Function;  // TODO implement
+  initDisplayForm: boolean;
+}
+function TodoRow({ todo, onComplete, onDelete, initDisplayForm }: ITodoProps) {
+
+  const [displayForm, setDisplayForm] = useState<boolean>(initDisplayForm);
+
+  return displayForm ? 
+    <InputTodo onSubmit={onComplete} /> 
+    :
+    <li>
+      {todo.text}
+      <button onClick={(_) => {onComplete(todo.id)}}>✔</button>
+      <button onClick={(_) => {onDelete(todo.id)}}>🗑</button>
+    </li>
+}
+
+
 interface ICategoryCardProps {
   category: ICategorySummary | null;
 }
-
 function CategoryCard({ category }: ICategoryCardProps ) {
 
   const [todos, setTodos] = useState<ITodo[]>([]);
@@ -106,13 +115,14 @@ function CategoryCard({ category }: ICategoryCardProps ) {
         <div className="card">
         <h2>{category.name}</h2>
         <ul>
-          {todos.map(todo => <Todo
+          {todos.map(todo => <TodoRow
             key={todo.id}
             todo={todo}
-            onComplete={() => onComplete(todo.id)}
-            onDelete={() => onDelete(todo.id)}
+            onComplete={onComplete}
+            onDelete={onDelete}
+            initDisplayForm={false}
           />)}
-          <InputTodo key={category.id} onCreate={onDoCreate}/>
+          <InputTodo key={category.id} onSubmit={onDoCreate}/>
         </ul>
         </div>
       :
