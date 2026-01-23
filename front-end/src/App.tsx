@@ -103,7 +103,7 @@ function CategoryCard({ category }: ICategoryCardProps ) {
   <>
     {
       category ?
-      <>
+        <div className="card">
         <h2>{category.name}</h2>
         <ul>
           {todos.map(todo => <Todo
@@ -114,7 +114,7 @@ function CategoryCard({ category }: ICategoryCardProps ) {
           />)}
           <InputTodo key={category.id} onCreate={onDoCreate}/>
         </ul>
-      </>
+        </div>
       :
       <h2>Select a category</h2>
     }
@@ -127,10 +127,10 @@ interface INewCategoryFormProps {
 }
 function NewCategoryForm({ onCreate }: INewCategoryFormProps) {
 
-  return <>
+  return <div className="card">
     <h2>Create New Category</h2>
     <InputComponent onSubmit={onCreate} />
-  </>
+  </div>
 }
 
 
