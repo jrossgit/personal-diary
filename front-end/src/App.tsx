@@ -51,18 +51,18 @@ function InputTodo({ onSubmit, todo }: IInputTodoProps) {
 
 
 interface ITodoProps {
-  todo: ITodo;  // TODO control via text
+  todo?: ITodo;  // TODO control via text
   onComplete: Function; // TODO more detailed type
   onDelete: Function;
-  onUpdate?: Function;  // TODO implement
+  onCreate: Function;  // TODO implement
   initDisplayForm: boolean;
 }
-function TodoRow({ todo, onComplete, onDelete, initDisplayForm }: ITodoProps) {
+function TodoRow({ todo, onComplete, onDelete, onCreate, initDisplayForm }: ITodoProps) {
 
   const [displayForm, setDisplayForm] = useState<boolean>(initDisplayForm);
 
   return displayForm ? 
-    <InputTodo onSubmit={onComplete} /> 
+    <InputTodo onSubmit={onCreate} /> 
     :
     <li>
       {todo.text}
@@ -88,7 +88,7 @@ function CategoryCard({ category }: ICategoryCardProps ) {
       }
     }, [category])
 
-  function onDoCreate(text: string) {
+  function onCreate(text: string) {
     const categoryId = category.id;
 
     createTodo(categoryId, text).then(
@@ -120,9 +120,16 @@ function CategoryCard({ category }: ICategoryCardProps ) {
             todo={todo}
             onComplete={onComplete}
             onDelete={onDelete}
+            onCreate={onCreate}
             initDisplayForm={false}
           />)}
-          <InputTodo key={category.id} onSubmit={onDoCreate}/>
+          <TodoRow             
+            key="new"
+            onComplete={onComplete}
+            onDelete={onDelete}
+            onCreate={onCreate}
+            initDisplayForm={true}
+          />
         </ul>
         </div>
       :
