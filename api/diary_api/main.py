@@ -14,13 +14,14 @@ from diary_api.db import (
     db_get_categories,
     db_get_category_todos,
     db_get_todos,
+    db_update_todo,
 )
 from diary_api.deps.db import DBSession
 
 
 # TODO: Move to settings dependency
 origins = [
-    "http://localhost:5173",
+    "http://localhost:5714",
     "http://127.0.0.1:5173",
     "http://localhost:9876",
 ]
@@ -89,6 +90,11 @@ def route_delete_category(db: DBSession, id: str) -> None:
 @app.post("/categories/{category_id}/todos")
 def route_create_todo(db: DBSession, todo: TodoWrite, category_id: str) -> TodoRead:
     return db_create_todo(db, category_id, todo.text)
+
+
+@app.patch("/todos/{todo_id}")
+def route_update_todo(db: DBSession, todo: TodoWrite, todo_id: str) -> TodoRead:
+    return db_update_todo(db, todo_id, todo.text)
 
 
 @app.get("/todos")

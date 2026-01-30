@@ -17,6 +17,7 @@ from diary_api.db import (
     db_get_categories,
     db_get_category_todos,
     db_get_todos,
+    db_update_todo,
 )
 
 
@@ -167,3 +168,12 @@ def test_delete_todo():
     todo = TodoFactory()
     db_delete_todo(test_db, todo.id)
     assert len(test_db.query(Todo).all()) == 0
+
+
+def test_update_todo_text():
+    todo = TodoFactory()
+    todo_out = db_update_todo(test_db, todo.id, text="New text")
+    
+    todo_db = test_db.query(Todo).one()
+    assert todo_db.id == todo_out.id
+    assert todo_db.text == "New text"

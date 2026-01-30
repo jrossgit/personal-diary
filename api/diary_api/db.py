@@ -19,6 +19,11 @@ def db_get_category_todos(db: Session, category_id: str, active_only=True):
     return query.all()
 
 
+# TODO: Add tests
+def db_get_todo(db: Session, todo_id: str):
+    return db.query(Todo).filter(Todo.id == todo_id).one()
+
+
 def db_create_category(db: Session, name: str):
     category = TodoCategory(name=name)
     db.add(category)
@@ -41,6 +46,15 @@ def db_delete_category_todos(db: Session, id: str):
 
 def db_create_todo(db: Session, category_id: str, text: str):
     todo = Todo(category_id=category_id, text=text)
+    db.add(todo)
+    db.commit()
+    return todo
+
+
+def db_update_todo(db: Session, todo_id: str, text: Optional[str] = None):
+    todo = db_get_todo(db, todo_id=todo_id)
+    if text:
+        todo.text = text
     db.add(todo)
     db.commit()
     return todo
