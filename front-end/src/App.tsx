@@ -1,7 +1,7 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import './App.css'
 import type { ICategory, ICategorySummary, ITodo } from './utils/interfaces'
-import { completeTodo, createCategory, createTodo, deleteTodo, getCategories, getCategoryDetail } from './utils/http'
+import { completeTodo, createCategory, createTodo, deleteTodo, getCategories, getCategoryDetail, updateTodo } from './utils/http'
 
 // TODOs
 // Install typescript stubs as used in Hub
@@ -17,36 +17,18 @@ function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
 
   const [text, setText] = useState(initialText);
 
+  const ref = useRef(null);
+
   function submit(formData: any) {
       onSubmit(formData.get("text"));
   }
 
   return <form action={submit}>
-    <input name="text" onChange={e => setText(e.target.value)}></input>
+    <input name="text" ref={ref} defaultValue={initialText} onChange={e => setText(e.target.value)}></input>
     <button type="submit">
       Submit
     </button>
   </form>
-}
-
-
-interface IInputTodoProps {
-  onSubmit: Function;
-  todo?: ITodo;
-}
-function InputTodo({ onSubmit, todo }: IInputTodoProps) {
-
-  const [inputVisible, setInputVisible] = useState(false);
-
-  function showInput() { setInputVisible(true); }
-
-  return <>
-    {
-      inputVisible ? <InputComponent onSubmit={onSubmit} />
-      :
-      <button onClick={showInput}><strong>+</strong></button>
-    }
-  </>
 }
 
 
@@ -55,17 +37,23 @@ interface ITodoProps {
   onComplete: Function; // TODO more detailed type
   onDelete: Function;
   onCreate: Function;  // TODO implement
+  onUpdate: Function;
   initDisplayForm: boolean;
 }
-function TodoRow({ todo, onComplete, onDelete, onCreate, initDisplayForm }: ITodoProps) {
+function TodoRow({ todo, onComplete, onDelete, onCreate, onUpdate, initDisplayForm }: ITodoProps) {
 
   const [displayForm, setDisplayForm] = useState<boolean>(initDisplayForm);
 
-  return displayForm ? 
-    <InputTodo onSubmit={onCreate} /> 
+  const onSubmitInput = todo ? 
+    (text: string) => {onUpdate(todo.id, text); setDisplayForm(false)}   // Use .then to handle failures?
     :
-    <li>
-      {todo.text}
+    onCreate
+  
+  return displayForm ? 
+    <InputComponent onSubmit={onSubmitInput} initialText={todo ? todo.text : ""} />
+    :
+    <li className={"clickable"}>
+      <span onDoubleClick={(_) => setDisplayForm(true)}>{todo.text}</span>
       <button onClick={(_) => {onComplete(todo.id)}}>✔</button>
       <button onClick={(_) => {onDelete(todo.id)}}>🗑</button>
     </li>
@@ -95,6 +83,12 @@ function CategoryCard({ category }: ICategoryCardProps ) {
       (resp) => setTodos([...todos, resp])
     );
   }
+  
+  function onUpdate(todoId: string, text: string) {
+    updateTodo(todoId, text).then(
+      (resp) => setTodos(todos.map(t => t.id === todoId ? resp : t))
+    );
+  }
 
   function onComplete(todoId: string) {
     completeTodo(todoId).then(
@@ -121,13 +115,15 @@ function CategoryCard({ category }: ICategoryCardProps ) {
             onComplete={onComplete}
             onDelete={onDelete}
             onCreate={onCreate}
+            onUpdate={onUpdate}
             initDisplayForm={false}
           />)}
-          <TodoRow             
+          <TodoRow
             key="new"
             onComplete={onComplete}
             onDelete={onDelete}
             onCreate={onCreate}
+            onUpdate={onUpdate}
             initDisplayForm={true}
           />
         </ul>

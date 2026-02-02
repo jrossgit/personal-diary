@@ -58,6 +58,24 @@ export const createTodo = (categoryId: string, text: string) => {
 }
 
 
+export const updateTodo = (todoId: string, text: string) => {
+    return fetch(`${API_BASE}/todos/${todoId}`,
+    {
+        method: "PATCH",
+        body: JSON.stringify({text: text}),
+        headers: {
+            "Accept": "application/json",
+            "Content-Type": "application/json",
+        },
+    })
+    .then(
+        (response) => response.json())
+    .catch((err) => {
+        console.log(err.message);
+    })
+}
+
+
 export const completeTodo = (todoId: string) => {
     return fetch(`${API_BASE}/todos/${todoId}:complete`,
     {
