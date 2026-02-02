@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef, useState, type FormEvent } from 'react'
 import './App.css'
 import type { ICategory, ICategorySummary, ITodo } from './utils/interfaces'
 import { completeTodo, createCategory, createTodo, deleteTodo, getCategories, getCategoryDetail, updateTodo } from './utils/http'
@@ -14,9 +14,7 @@ interface IInputComponentProps {
 }
 
 function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
-
-  const [text, setText] = useState(initialText);
-
+ 
   const ref = useRef(null);
 
   function submit(formData: any) {
@@ -24,7 +22,7 @@ function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
   }
 
   return <form action={submit}>
-    <input name="text" ref={ref} defaultValue={initialText} onChange={e => setText(e.target.value)}></input>
+    <input name="text" ref={ref} defaultValue={initialText} required></input>
     <button type="submit">
       Submit
     </button>
@@ -52,8 +50,8 @@ function TodoRow({ todo, onComplete, onDelete, onCreate, onUpdate, initDisplayFo
   return displayForm ? 
     <InputComponent onSubmit={onSubmitInput} initialText={todo ? todo.text : ""} />
     :
-    <li className={"clickable"}>
-      <span onDoubleClick={(_) => setDisplayForm(true)}>{todo.text}</span>
+    <li>
+      <span className={"clickable"} onDoubleClick={(_) => setDisplayForm(true)}>{todo.text}</span>
       <button onClick={(_) => {onComplete(todo.id)}}>✔</button>
       <button onClick={(_) => {onDelete(todo.id)}}>🗑</button>
     </li>
