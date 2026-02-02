@@ -14,15 +14,13 @@ interface IInputComponentProps {
 }
 
 function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
- 
-  const ref = useRef(null);
 
   function submit(formData: any) {
       onSubmit(formData.get("text"));
   }
 
   return <form action={submit}>
-    <input name="text" ref={ref} defaultValue={initialText} required></input>
+    <input name="text" defaultValue={initialText} required></input>
     <button type="submit">
       Submit
     </button>
