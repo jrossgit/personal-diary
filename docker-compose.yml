@@ -12,7 +12,7 @@ services:
     ports:
       - "9876:8000"
     volumes:
-      - ./sqlite_data:/app/data
+      - sqlite_data:/app/data
     environment:
       - SQL_DATABASE=${API_SQL_DATABASE}
       - CORS_ALLOWED_ORIGINS=["http://localhost:${FRONT_END_PORT}"]
