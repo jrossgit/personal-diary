@@ -20,8 +20,6 @@ from diary_api.db import (
 from diary_api.deps.db import DBSession
 
 
-# TODO: Move to settings dependency
-
 app = FastAPI()
 
 LOGGER = logging.getLogger(__name__)
@@ -34,7 +32,6 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
 
 
 class TodoWrite(BaseModel):
