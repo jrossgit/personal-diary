@@ -89,6 +89,20 @@ export const completeTodo = (todoId: string) => {
 }
 
 
+export const deleteCategory = (categoryId: string) => {
+    return fetch(`${API_BASE}/categories/${categoryId}`,
+    {
+        method: "DELETE",
+    })
+    .then(
+        (response) => response.json())
+    .catch
+    ((err) => {
+        console.log(err.message);
+    })
+}
+
+
 export const deleteTodo = (todoId: string) => {
     return fetch(`${API_BASE}/todos/${todoId}`,
     {

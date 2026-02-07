@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type FormEvent } from 'react'
 import './App.css'
 import type { ICategory, ICategorySummary, ITodo } from './utils/interfaces'
-import { completeTodo, createCategory, createTodo, deleteTodo, getCategories, getCategoryDetail, updateTodo } from './utils/http'
+import { completeTodo, createCategory, createTodo, deleteCategory, deleteTodo, getCategories, getCategoryDetail, updateTodo } from './utils/http'
 
 // TODOs
 // Install typescript stubs as used in Hub
@@ -57,9 +57,10 @@ function TodoRow({ todo, onComplete, onDelete, onCreate, onUpdate, initDisplayFo
 
 
 interface ICategoryCardProps {
-  category: ICategorySummary | null;
+  category: ICategorySummary;
+  onDeleteCategory: Function; // TODO
 }
-function CategoryCard({ category }: ICategoryCardProps ) {
+function CategoryCard({ category, onDeleteCategory }: ICategoryCardProps ) {
 
   const [todos, setTodos] = useState<ITodo[]>([]);
 
@@ -101,9 +102,9 @@ function CategoryCard({ category }: ICategoryCardProps ) {
   return (
   <>
     {
-      category ?
         <div className="card">
         <h2>{category.name}</h2>
+        <button onClick={onDeleteCategory}>Delete category</button>
         <ul>
           {todos.map(todo => <TodoRow
             key={todo.id}
@@ -124,8 +125,6 @@ function CategoryCard({ category }: ICategoryCardProps ) {
           />
         </ul>
         </div>
-      :
-      <h2>Select a category</h2>
     }
   </>
   )
@@ -166,6 +165,17 @@ function App() {
     );
   }
 
+  function onDeleteCategory(categoryId: string) {
+    deleteCategory(categoryId).then(
+      (_) => {
+        if (selectedCategory && selectedCategory.id === categoryId) {
+          setSelectedCategory(null);
+        }
+        setCategories(categories.filter(c => c.id !== categoryId));
+      }
+    )
+  }
+
   return (
     <>
       <header>
@@ -183,7 +193,10 @@ function App() {
           {newCategoryFormOpen ?
             <NewCategoryForm onCreate={onCreateCategory} />
             :
-            <CategoryCard category={selectedCategory}/>
+            selectedCategory ?
+            <CategoryCard category={selectedCategory} onDeleteCategory={() => onDeleteCategory(selectedCategory.id)}/>
+            :
+            <h2>Select a category</h2>
           }
         </main>
     </>
