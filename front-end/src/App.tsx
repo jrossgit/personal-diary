@@ -9,18 +9,24 @@ import { completeTodo, createCategory, createTodo, deleteCategory, deleteTodo, g
 
 
 interface IInputComponentProps {
+  onEscape?: Function;
   onSubmit: Function; // TODO more detailed type
   initialText?: string;
 }
 
-function InputComponent({ onSubmit, initialText = "" }: IInputComponentProps) {
+function InputComponent({ onSubmit, onEscape = () => {}, initialText = "" }: IInputComponentProps) {
 
   function submit(formData: any) {
       onSubmit(formData.get("text"));
   }
 
   return <form action={submit}>
-    <input name="text" defaultValue={initialText} required></input>
+    <input
+      name="text"
+      defaultValue={initialText}
+      onKeyUp={(e) => {if (e.code === "Escape") {onEscape()}}}
+      required>
+    </input>
     <button type="submit">
       Submit
     </button>
@@ -44,9 +50,13 @@ function TodoRow({ todo, onComplete, onDelete, onCreate, onUpdate, initDisplayFo
     (text: string) => {onUpdate(todo.id, text); setDisplayForm(false)}   // Use .then to handle failures?
     :
     onCreate
-  
+
   return displayForm ? 
-    <InputComponent onSubmit={onSubmitInput} initialText={todo ? todo.text : ""} />
+    <InputComponent
+      onEscape={() => {if (todo) {setDisplayForm(false);}}}
+      onSubmit={onSubmitInput}
+      initialText={todo ? todo.text : ""}
+    />
     :
     <li>
       <span className={"clickable"} onDoubleClick={(_) => setDisplayForm(true)}>{todo.text}</span>
